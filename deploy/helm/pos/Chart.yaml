@@ -27,3 +27,6 @@ dependencies:
   - name: audit-service
     version: 0.1.0
     repository: "file://charts/audit-service"
+  - name: product-service
+    version: 0.1.0
+    repository: "file://charts/product-service"

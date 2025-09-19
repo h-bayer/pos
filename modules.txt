@@ -6,3 +6,4 @@ payments-service
 insurer-integration-service
 label-localization-service
 audit-service
+product-service

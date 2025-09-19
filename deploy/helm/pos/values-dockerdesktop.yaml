@@ -30,6 +30,22 @@ pricing-service:
     - name: SPRING_DATA_REDIS_HOST
       value: "redis"
 
+product-service:
+  image:
+    repository: "product-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_product_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
 prescription-service:
   image:
     repository: "prescription-service"
