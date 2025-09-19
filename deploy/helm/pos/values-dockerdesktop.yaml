@@ -1,0 +1,127 @@
+edge-pos-api:
+  image:
+    repository: "edge-pos-api"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_edge_pos_api"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+pricing-service:
+  image:
+    repository: "pricing-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_pricing_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+prescription-service:
+  image:
+    repository: "prescription-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_prescription_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+inventory-service:
+  image:
+    repository: "inventory-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_inventory_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+payments-service:
+  image:
+    repository: "payments-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_payments_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+insurer-integration-service:
+  image:
+    repository: "insurer-integration-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_insurer_integration_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+label-localization-service:
+  image:
+    repository: "label-localization-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_label_localization_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+audit-service:
+  image:
+    repository: "audit-service"
+    tag: "0.0.1"
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_audit_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"

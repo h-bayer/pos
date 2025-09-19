@@ -1,0 +1,34 @@
+host: pos.localtest.me
+useRegex: true
+rewriteTarget: "/$2"
+paths:
+  - prefix: /edge(/|$)(.*)
+    service: pos-edge-pos-api
+    port: 80
+  - prefix: /inventory(/|$)(.*)
+    service: pos-inventory-service
+    port: 80
+  - prefix: /pricing(/|$)(.*)
+    service: pos-pricing-service
+    port: 80
+  - prefix: /prescription(/|$)(.*)
+    service: pos-prescription-service
+    port: 80
+  - prefix: /payments(/|$)(.*)
+    service: pos-payments-service
+    port: 80
+  - prefix: /insurer(/|$)(.*)
+    service: pos-insurer-integration-service
+    port: 80
+  - prefix: /label(/|$)(.*)
+    service: pos-label-localization-service
+    port: 80
+  - prefix: /audit(/|$)(.*)
+    service: pos-audit-service
+    port: 80
+
+tls:
+  enabled: false
+  secretName: pos-tls
+  hosts:
+    - pos.localtest.me

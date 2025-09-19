@@ -1,0 +1,27 @@
+dependencies:
+- name: edge-pos-api
+  repository: file://charts/edge-pos-api
+  version: 0.1.0
+- name: pricing-service
+  repository: file://charts/pricing-service
+  version: 0.1.0
+- name: prescription-service
+  repository: file://charts/prescription-service
+  version: 0.1.0
+- name: inventory-service
+  repository: file://charts/inventory-service
+  version: 0.1.0
+- name: payments-service
+  repository: file://charts/payments-service
+  version: 0.1.0
+- name: insurer-integration-service
+  repository: file://charts/insurer-integration-service
+  version: 0.1.0
+- name: label-localization-service
+  repository: file://charts/label-localization-service
+  version: 0.1.0
+- name: audit-service
+  repository: file://charts/audit-service
+  version: 0.1.0
+digest: sha256:b90e81bcb02b77dfa93be5ede442e790ec60df7dfd5f4ac3c6eb42b1cc00c5de
+generated: "2025-09-03T11:38:26.746636553+02:00"

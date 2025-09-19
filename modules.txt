@@ -1,0 +1,8 @@
+edge-pos-api
+pricing-service
+prescription-service
+inventory-service
+payments-service
+insurer-integration-service
+label-localization-service
+audit-service

@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pos-gateway
+  annotations:
+    kubernetes.io/ingress.class: nginx
+{{- if .Values.useRegex }}
+    nginx.ingress.kubernetes.io/use-regex: "true"
+{{- end }}
+    nginx.ingress.kubernetes.io/rewrite-target: "{{ .Values.rewriteTarget }}"
+spec:
+{{- if .Values.tls.enabled }}
+  tls:
+    - secretName: {{ .Values.tls.secretName }}
+      hosts:
+{{ toYaml .Values.tls.hosts | indent 8 }}
+{{- end }}
+  rules:
+    - host: {{ .Values.host | quote }}
+      http:
+        paths:
+{{- range .Values.paths }}
+          - path: {{ .prefix | quote }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .service }}
+                port:
+                  number: {{ .port }}
+{{- end }}

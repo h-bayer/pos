@@ -1,0 +1,29 @@
+apiVersion: v2
+name: pos
+version: 0.1.0
+type: application
+dependencies:
+  - name: edge-pos-api
+    version: 0.1.0
+    repository: "file://charts/edge-pos-api"
+  - name: pricing-service
+    version: 0.1.0
+    repository: "file://charts/pricing-service"
+  - name: prescription-service
+    version: 0.1.0
+    repository: "file://charts/prescription-service"
+  - name: inventory-service
+    version: 0.1.0
+    repository: "file://charts/inventory-service"
+  - name: payments-service
+    version: 0.1.0
+    repository: "file://charts/payments-service"
+  - name: insurer-integration-service
+    version: 0.1.0
+    repository: "file://charts/insurer-integration-service"
+  - name: label-localization-service
+    version: 0.1.0
+    repository: "file://charts/label-localization-service"
+  - name: audit-service
+    version: 0.1.0
+    repository: "file://charts/audit-service"

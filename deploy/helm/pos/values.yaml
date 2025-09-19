@@ -1,0 +1,165 @@
+global:
+  image:
+    registry: your-registry.example.com/pharmacy
+  env:
+    SPRING_PROFILES_ACTIVE: "k8s"
+
+edge-pos-api:
+  image:
+    repository: "{{ .Values.global.image.registry }}/edge-pos-api"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_edge_pos_api"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+pricing-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/pricing-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_pricing_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+prescription-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/prescription-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_prescription_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+inventory-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/inventory-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_inventory_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+payments-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/payments-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_payments_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+insurer-integration-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/insurer-integration-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_insurer_integration_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+label-localization-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/label-localization-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_label_localization_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
+
+audit-service:
+  image:
+    repository: "{{ .Values.global.image.registry }}/audit-service"
+    tag: "0.0.1"
+  replicas: 1
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+  extraEnv:
+    - name: SPRING_DATASOURCE_URL
+      value: "jdbc:postgresql://postgres:5432/pos_audit_service"
+    - name: SPRING_DATASOURCE_USERNAME
+      value: "admin"
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: "admin"
+    - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+      value: "redpanda:9092"
+    - name: SPRING_DATA_REDIS_HOST
+      value: "redis"
