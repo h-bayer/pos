@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 @Component
 class DefaultProductFactory implements IProductFactory {
 
-    private final Map<ProductType, ProductCreator> creators;
+    private final Map<ProductType, IProductCreator> creators;
 
-    DefaultProductFactory(Set<ProductCreator> creators) {
-        this.creators = creators.stream().collect(Collectors.toMap(ProductCreator::type, c -> c));
+    DefaultProductFactory(Set<IProductCreator> creators) {
+        this.creators = creators.stream().collect(Collectors.toMap(IProductCreator::type, c -> c));
     }
 
     public Product create(long sku, String name, String desc, ProductType type, Map<String,Integer> avail) {

@@ -3,12 +3,12 @@ package de.bayer.pharmacy.productservice.product.factory.creators;
 import de.bayer.pharmacy.productservice.product.Product;
 import de.bayer.pharmacy.productservice.product.ProductAvailability;
 import de.bayer.pharmacy.productservice.product.ProductType;
-import de.bayer.pharmacy.productservice.product.factory.ProductCreator;
+import de.bayer.pharmacy.productservice.product.factory.IProductCreator;
 
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class AbstractProductCreator implements ProductCreator {
+public abstract class AbstractProductCreator implements IProductCreator {
 
     protected Product buildBase(long sku, String name, String description, ProductType type) {
         if (sku <= 0) throw new IllegalArgumentException("sku must be > 0");
