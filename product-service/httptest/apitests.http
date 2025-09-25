@@ -220,3 +220,21 @@ Content-Type: {{contentType}}
   "description": "Chamomile & valerian blend",
   "type": "OTC"
 }
+
+### 21) Approve a product
+
+
+POST {{baseUrl}}/api/products/100001/approve
+Content-Type: application/json
+
+{
+  "sku": 100001
+}
+
+### 22) Publish a product
+POST {{baseUrl}}/api/products/100001/publish
+Content-Type: application/json
+
+{
+  "sku": 100001
+}

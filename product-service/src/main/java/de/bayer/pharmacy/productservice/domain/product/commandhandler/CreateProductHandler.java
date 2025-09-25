@@ -32,6 +32,9 @@ public class CreateProductHandler implements ICommandHandler<CreateProductComman
 
         // repo expects the concrete entity type; no interface possible
         var result = repo.save(product);
+
+
+
         return result;
     }
 }
