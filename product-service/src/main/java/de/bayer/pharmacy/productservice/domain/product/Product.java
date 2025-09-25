@@ -2,6 +2,7 @@ package de.bayer.pharmacy.productservice.domain.product;
 
 
 import de.bayer.pharmacy.productservice.domain.product.events.ProductApprovedEvent;
+import de.bayer.pharmacy.productservice.domain.product.events.ProductDeletedEvent;
 import de.bayer.pharmacy.productservice.domain.product.events.ProductPublishedEvent;
 import de.bayer.pharmacy.productservice.domain.product.events.ProductRevertedToDraftEvent;
 import jakarta.persistence.*;
@@ -52,6 +53,7 @@ public class Product{
     private Instant approvedAt;
 
     @Transient private final List<Object> domainEvents = new ArrayList<>();
+
     private String publishedBy;
 
     public Instant getPublishedAt() {
@@ -65,11 +67,7 @@ public class Product{
     private Instant publishedAt;
 
 
-    public List<Object> pullDomainEvents() {
-        var copy = List.copyOf(domainEvents);
-        domainEvents.clear();
-        return copy;
-    }
+
 
 
 
@@ -237,15 +235,19 @@ public class Product{
         this.publishedBy = publishedBy;
     }
 
+    public boolean canBeDeleted() {
+        return !this.availabilities.stream().anyMatch(a -> a.getAvailableQuantity()>0);
+    }
 
-    //    public static final class ProductRegisteredEvent {
-//        public final Long productId;
-//        public final String sku;
-//        public ProductRegisteredEvent(Long productId, String sku) {
-//            this.productId = productId; this.sku = sku;
-//        }
-//    }
+    public void prepareDeletion()
+    {
+        this.record(new ProductDeletedEvent(sku));
+    }
 
-
+    public List<Object> pullDomainEvents() {
+        var copy = List.copyOf(domainEvents);
+        domainEvents.clear();
+        return copy;
+    }
 
 }
