@@ -10,6 +10,5 @@ public record PublishProductCommand(
 
     public PublishProductCommand {
         if (sku <= 0) throw new IllegalArgumentException("sku must be > 0");
-
     }
 }
