@@ -1,14 +1,12 @@
 package de.bayer.pharmacy.productservice.product.factory;
 
-import de.bayer.pharmacy.productservice.product.IProduct;
 import de.bayer.pharmacy.productservice.product.Product;
-import de.bayer.pharmacy.productservice.product.ProductAvailability;
 import de.bayer.pharmacy.productservice.product.ProductType;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
