@@ -14,7 +14,7 @@ import java.util.*;
 
 
 @Entity
-public class Product {
+public class Product implements IProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -57,114 +57,131 @@ public class Product {
 
     @Transient private final List<Object> domainEvents = new ArrayList<>();
 
-    private void record(Object event) {
-        domainEvents.add(event);
-    }
-
+    @Override
     public List<Object> pullDomainEvents() {
         var copy = List.copyOf(domainEvents);
         domainEvents.clear();
         return copy;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public Instant getCreatedAt() {
         return createdAt;
     }
 
+    @Override
     public ProductType getType() {
         return type;
     }
 
+    @Override
     public void setType(ProductType type) {
         this.type = type;
     }
 
+    @Override
     public Set<ProductImage> getImages() {
         return images;
     }
 
+    @Override
     public long getSku() {
         return sku;
     }
 
+    @Override
     public void setSku(long sku) {
         this.sku = sku;
     }
 
+    @Override
     public Instant getApprovedAt() {
         return approvedAt;
     }
 
+    @Override
     public void setApprovedAt(Instant approvedAt) {
         this.approvedAt = approvedAt;
     }
 
+    @Override
     public Set<ProductAvailability> getAvailabilities() {
         return availabilities;
     }
 
+    @Override
     public void addImage(ProductImage image) {
         this.images.removeIf(i->i.getImageUrl().equals(image.getImageUrl()));
         images.add(image);
     }
 
+    @Override
     public long getVersion() {
         return version;
     }
 
+    @Override
     public void setVersion(long version) {
         this.version = version;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
+    @Override
     public ProductStatus getStatus() {
         return status;
     }
 
+    @Override
     public void setStatus(ProductStatus status) {
         this.status = status;
     }
 
+    @Override
     public String getApprovedBy() {
         return approvedBy;
     }
 
+    @Override
     public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
     }
 
-    private static void require(boolean cond, String msg) {
-        if (!cond) throw new IllegalStateException(msg);
-    }
-
     // ---- State transitions
+    @Override
     public void approve(String approver) {
         require(status == ProductStatus.DRAFT, "Only DRAFT can be approved");
         this.status = ProductStatus.APPROVED;
@@ -174,6 +191,7 @@ public class Product {
         record(new ProductApprovedEvent(id, sku, approvedAt, approvedBy));
     }
 
+    @Override
     public void revertToDraft() {
         require(status == ProductStatus.APPROVED, "Only APPROVED can revert to DRAFT");
         this.status = ProductStatus.DRAFT;
@@ -183,11 +201,13 @@ public class Product {
         record(new ProductRevertedToDraftEvent(id, sku, Instant.now()));
     }
 
+    @Override
     public void rename(String newName) {
         require(status == ProductStatus.DRAFT, "Only DRAFT products can be edited");
         this.name = newName;
     }
 
+    @Override
     public void addAvailability(ProductAvailability availability) {
         if (availability.getAvailableQuantity() < 0) throw new IllegalArgumentException("quantity must be >= 0");
 
@@ -215,21 +235,16 @@ public class Product {
         this.createdAt = Instant.now();
     }
 
+    private void require(boolean cond, String msg) {
+        if (!cond) throw new IllegalStateException(msg);
+    }
+
+    void record(Object event) {
+        domainEvents.add(event);
+    }
 
 
-
-    public record RegisterProductCommand(
-            @NotBlank String sku,
-            @NotBlank String name,
-            @NotNull ProductType type,
-            Map<String, Integer> initialAvailabilityByBranch // optional
-    ) {}
-
-    public record ProductId(Long value) {}
-
-
-
-//    public static final class ProductRegisteredEvent {
+    //    public static final class ProductRegisteredEvent {
 //        public final Long productId;
 //        public final String sku;
 //        public ProductRegisteredEvent(Long productId, String sku) {

@@ -1,29 +1,45 @@
 package de.bayer.pharmacy.productservice.api;
 
-import de.bayer.pharmacy.productservice.product.ProductService;
+import de.bayer.pharmacy.common.commandhandling.CommandBus;
+import de.bayer.pharmacy.productservice.api.dto.ProductMapper;
+import de.bayer.pharmacy.productservice.api.dto.ProductRequest;
+import de.bayer.pharmacy.productservice.api.dto.ProductResponse;
+import de.bayer.pharmacy.productservice.product.Product;
+import de.bayer.pharmacy.productservice.product.ProductType;
+import de.bayer.pharmacy.productservice.product.commands.CreateProductCommand;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
-    private final ProductService svc;
 
-    public ProductController(ProductService s) {
-        this.svc = s;
+    private final CommandBus bus; // using your CQRS setup
+
+    public ProductController(CommandBus bus) {
+        this.bus = bus;
     }
 
-//    @GetMapping
-//    public List<Product> search(@RequestParam(required = false) String q) {
-//        return svc.search(q);
-//    }
-//
-//    @PostMapping
-//    public Product create(@Validated @RequestBody Product p) {
-//        return svc.save(p);
-//    }
+    @PostMapping
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
+        var command = new CreateProductCommand(
+                request.sku(),
+                request.name(),
+                request.description(),
+                ProductType.valueOf(request.type()),
+                request.initialAvailabilityByBranch()
+        );
 
-//    @GetMapping("/sku/{sku}")
-//    public Product bySku(@PathVariable String sku) {
-//        return svc.bySku(sku);
+        Product product = bus.dispatch(command);
+
+
+        return ResponseEntity.ok(ProductMapper.toResponse(product));
+    }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ProductResponse> get(@PathVariable Long id) {
+//
+//        return ResponseEntity.ok(ProductMapper.toResponse(product));
 //    }
 }

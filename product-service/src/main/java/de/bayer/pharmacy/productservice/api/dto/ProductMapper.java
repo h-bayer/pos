@@ -1,21 +1,26 @@
 package de.bayer.pharmacy.productservice.api.dto;
 
 import de.bayer.pharmacy.productservice.product.Product;
+import de.bayer.pharmacy.productservice.product.ProductImage;
+
+import java.util.stream.Collectors;
+
 
 public class ProductMapper {
 
-    public static ProductDto toDto(Product product) {
-        return new ProductDto(
+    public static ProductResponse toResponse(Product product) {
+        return new ProductResponse(
                 product.getId(),
-                product.getVersion(),
                 product.getSku(),
                 product.getName(),
                 product.getDescription(),
                 product.getCreatedAt(),
-                product.getType(),
-                product.getStatus(),
-                product.getImages(),
-                product.getAvailabilities(),
+                product.getType().name(),
+                product.getStatus().name(),
+                product.getImages().stream().map(ProductImage::getImageUrl).collect(Collectors.toSet()),
+                product.getAvailabilities().stream()
+                        .map(a -> new ProductResponse.BranchAvailability(a.getBranchCode(), a.getAvailableQuantity()))
+                        .collect(Collectors.toSet()),
                 product.getApprovedBy(),
                 product.getApprovedAt()
         );

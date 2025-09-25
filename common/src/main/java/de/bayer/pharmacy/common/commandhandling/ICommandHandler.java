@@ -1,6 +1,6 @@
 package de.bayer.pharmacy.common.commandhandling;
 
-public interface CommandHandler<C extends Command<R>, R> {
+public interface ICommandHandler<C extends ICommand<R>, R> {
     R handle(C command);
     Class<C> commandType();
 }

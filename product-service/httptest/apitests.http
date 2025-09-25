@@ -1,0 +1,242 @@
+@baseUrl = http://localhost:8081
+@contentType = application/json
+
+### 1) Create product 100001
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100001,
+  "name": "Aspirin 500mg",
+  "description": "Pain relief tablets",
+  "type": "RX",
+  "initialAvailabilityByBranch": { "BER": 50, "MUC": 30 }
+}
+
+### 2) Create product 100002
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100002,
+  "name": "Cough Syrup Junior",
+  "description": "Sugar-free cough syrup for kids",
+  "type": "OTC",
+  "initialAvailabilityByBranch": { "HAM": 25, "CGN": 20, "FRA": 15 }
+}
+
+### 3) Create product 100003
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100003,
+  "name": "Vitamin D3 1000 IU",
+  "description": "Daily vitamin D supplement",
+  "type": "SUPPLEMENT",
+  "initialAvailabilityByBranch": { "BER": 40 }
+}
+
+### 4) Create product 100004
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100004,
+  "name": "Skin Repair Cream",
+  "description": "Moisturizing dermatology cream",
+  "type": "COSMETIC",
+  "initialAvailabilityByBranch": { "STR": 18, "DUS": 22 }
+}
+
+### 5) Create product 100005
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100005,
+  "name": "Blood Pressure Monitor",
+  "description": "Automatic upper arm device",
+  "type": "DEVICE",
+  "initialAvailabilityByBranch": { "MUC": 12, "BER": 10, "FRA": 8 }
+}
+
+### 6) Create product 100006
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100006,
+  "name": "Probiotic Capsules",
+  "description": "Gut health support",
+  "type": "SUPPLEMENT",
+  "initialAvailabilityByBranch": { "LEI": 25 }
+}
+
+### 7) Create product 100007
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100007,
+  "name": "Allergy Relief Tablets",
+  "description": "Antihistamine for seasonal allergies",
+  "type": "OTC",
+  "initialAvailabilityByBranch": { "NUE": 35, "STU": 15 }
+}
+
+### 8) Create product 100008
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100008,
+  "name": "Nasal Spray",
+  "description": "Decongestant nasal spray",
+  "type": "OTC",
+  "initialAvailabilityByBranch": { "CGN": 28 }
+}
+
+### 9) Create product 100009
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100009,
+  "name": "Hand Sanitizer 250ml",
+  "description": "Alcohol-based sanitizer",
+  "type": "HYGIENE",
+  "initialAvailabilityByBranch": { "BER": 60, "HAM": 40, "FRA": 20 }
+}
+
+### 10) Create product 100010
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100010,
+  "name": "Thermometer Digital",
+  "description": "Fast reading digital thermometer",
+  "type": "DEVICE",
+  "initialAvailabilityByBranch": { "MUC": 14 }
+}
+
+### 11) Create product 100011
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100011,
+  "name": "Multivitamin Gummies",
+  "description": "Daily multivitamin for adults",
+  "type": "SUPPLEMENT",
+  "initialAvailabilityByBranch": { "DUS": 18, "LEI": 12 }
+}
+
+### 12) Create product 100012
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100012,
+  "name": "Soothing Eye Drops",
+  "description": "Lubricating drops for dry eyes",
+  "type": "OTC",
+  "initialAvailabilityByBranch": { "STU": 16 }
+}
+
+### 13) Create product 100013
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100013,
+  "name": "Antibacterial Wipes",
+  "description": "Travel pack disinfectant wipes",
+  "type": "HYGIENE",
+  "initialAvailabilityByBranch": { "BER": 45, "CGN": 30 }
+}
+
+### 14) Create product 100014
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100014,
+  "name": "Omega-3 Fish Oil",
+  "description": "High EPA/DHA softgels",
+  "type": "SUPPLEMENT",
+  "initialAvailabilityByBranch": { "HAM": 22 }
+}
+
+### 15) Create product 100015
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100015,
+  "name": "Acne Spot Treatment",
+  "description": "Salicylic acid gel",
+  "type": "COSMETIC",
+  "initialAvailabilityByBranch": { "FRA": 12, "NUE": 10 }
+}
+
+### 16) Create product 100016
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100016,
+  "name": "Electrolyte Powder",
+  "description": "Rehydration mix, lemon flavor",
+  "type": "OTC",
+  "initialAvailabilityByBranch": { "MUC": 26 }
+}
+
+### 17) Create product 100017
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100017,
+  "name": "Calcium + Magnesium",
+  "description": "Bone health mineral complex",
+  "type": "SUPPLEMENT",
+  "initialAvailabilityByBranch": { "BER": 20, "STU": 10 }
+}
+
+### 18) Create product 100018
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100018,
+  "name": "Lip Balm SPF 30",
+  "description": "Sun-protect lip care",
+  "type": "COSMETIC",
+  "initialAvailabilityByBranch": { "CGN": 24 }
+}
+
+### 19) Create product 100019
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100019,
+  "name": "Reusable Cold Pack",
+  "description": "Gel pack for cold therapy",
+  "type": "DEVICE",
+  "initialAvailabilityByBranch": { "HAM": 9, "FRA": 7 }
+}
+
+### 20) Create product 100020
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "sku": 100020,
+  "name": "Herbal Sleep Tea",
+  "description": "Chamomile & valerian blend",
+  "type": "OTC",
+  "initialAvailabilityByBranch": { "LEI": 15, "STR": 10 }
+}
