@@ -6,13 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 public record ProductRequest(
-        @NotNull Long sku,
+        @NotNull Long sku
 
-        @NotBlank String name,
-
-        @NotBlank String description,
-
-        @NotNull String type,   // ProductType as String, can map later
-
-        Map<String, Integer> initialAvailabilityByBranch
 ) { }
