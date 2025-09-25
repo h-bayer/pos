@@ -29,7 +29,8 @@ public class DeleteProductHandler implements ICommandHandler<DeleteProductComman
         return DeleteProductCommand.class;
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public Void handle(DeleteProductCommand cmd) {
 
         var prodOpt = this.repo.findBySku(cmd.sku());
