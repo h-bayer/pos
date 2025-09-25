@@ -28,6 +28,8 @@ public class CreateProductHandler implements ICommandHandler<CreateProductComman
         var product = productFactory.create(
                 cmd.sku(), cmd.name(), cmd.description(), cmd.type(), cmd.initialAvailabilityByBranch()
         );
+
+
         // repo expects the concrete entity type; no interface possible
         repo.save(product);
         return product;

@@ -15,13 +15,14 @@ import java.util.*;
 
 @Entity
 public class Product implements IProduct {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
+
+
 
     @Version
     private long version;
 
+    @Id
     @Column(nullable = false)
     private long sku;
 
@@ -64,15 +65,7 @@ public class Product implements IProduct {
         return copy;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public String getName() {
@@ -188,7 +181,7 @@ public class Product implements IProduct {
         this.approvedAt = Instant.now();
         this.approvedBy = approver;
 
-        record(new ProductApprovedEvent(id, sku, approvedAt, approvedBy));
+        record(new ProductApprovedEvent( sku, approvedAt, approvedBy));
     }
 
     @Override
@@ -198,7 +191,7 @@ public class Product implements IProduct {
         this.approvedAt = null;
         this.approvedBy = null;
 
-        record(new ProductRevertedToDraftEvent(id, sku, Instant.now()));
+        record(new ProductRevertedToDraftEvent( sku, Instant.now()));
     }
 
     @Override
@@ -224,9 +217,9 @@ public class Product implements IProduct {
 
     }
 
-    public Product(ProductType type, Long id, String name, String description) {
+    public Product(ProductType type, Long sku, String name, String description) {
         this.type = type;
-        this.id = id;
+        this.sku = sku;
         this.name = name;
         this.description = description;
         this.images = images;

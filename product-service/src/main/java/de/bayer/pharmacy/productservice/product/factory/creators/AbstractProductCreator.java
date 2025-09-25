@@ -17,8 +17,8 @@ public abstract class AbstractProductCreator implements IProductCreator {
         Objects.requireNonNull(type, "type");
 
         // Your entity has a ctor: Product(ProductType type, Long id, String name, String description)
-        var product = new Product(type, null, name, description);
-        product.setSku(sku);
+        var product = new Product(type, sku, name, description);
+
         return product;
     }
 

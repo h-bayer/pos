@@ -31,7 +31,7 @@ public interface ProductRepository
 
     // Eagerly fetch availability when needed (adjust attribute name to your model)
     @EntityGraph(attributePaths = {"availabilities"})
-    Optional<Product> findWithAvailabilitiesById(Long id);
+    Optional<Product> findWithAvailabilitiesBySku(Long sku);
 
     // Pessimistic lock variant for workflows that must serialize updates (e.g., approval)
     @Lock(LockModeType.PESSIMISTIC_WRITE)

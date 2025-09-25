@@ -13,9 +13,7 @@ public interface IProduct {
 
     List<Object> pullDomainEvents();
 
-    Long getId();
 
-    void setId(Long id);
 
     String getName();
 

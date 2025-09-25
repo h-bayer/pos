@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Set;
 
 public record ProductResponse(
-        Long id,
+      
         Long sku,
         String name,
         String description,
