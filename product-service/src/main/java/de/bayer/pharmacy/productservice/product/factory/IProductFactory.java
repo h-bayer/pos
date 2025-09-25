@@ -7,6 +7,5 @@ import de.bayer.pharmacy.productservice.product.ProductType;
 import java.util.Map;
 
 public interface IProductFactory {
-    Product create(long sku, String name, String description, ProductType type,
-                   Map<String,Integer> initialAvailabilityByBranch);
+    Product create(long sku, String name, String description, ProductType type);
 }

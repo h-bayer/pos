@@ -26,7 +26,7 @@ public class CreateProductHandler implements ICommandHandler<CreateProductComman
     @Override @Transactional
     public Product handle(CreateProductCommand cmd) {
         var product = productFactory.create(
-                cmd.sku(), cmd.name(), cmd.description(), cmd.type(), cmd.initialAvailabilityByBranch()
+                cmd.sku(), cmd.name(), cmd.description(), cmd.type()
         );
 
 

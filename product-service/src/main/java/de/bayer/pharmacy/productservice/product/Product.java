@@ -4,8 +4,6 @@ package de.bayer.pharmacy.productservice.product;
 import de.bayer.pharmacy.productservice.product.events.ProductApprovedEvent;
 import de.bayer.pharmacy.productservice.product.events.ProductRevertedToDraftEvent;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
@@ -121,11 +119,11 @@ public class Product{
 
 
     public Set<ProductAvailability> getAvailabilities() {
-        return availabilities;
+        return Collections.unmodifiableSet(availabilities);
     }
 
 
-    public void addImage(ProductImage image) {
+    public void upsertImage(ProductImage image) {
         this.images.removeIf(i->i.getImageUrl().equals(image.getImageUrl()));
         images.add(image);
     }

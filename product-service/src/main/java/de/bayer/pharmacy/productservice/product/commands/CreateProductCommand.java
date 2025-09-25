@@ -11,8 +11,7 @@ public record CreateProductCommand(
         long sku,
         String name,
         String description,
-        ProductType type,
-        Map<String, Integer> initialAvailabilityByBranch
+        ProductType type
 ) implements ICommand<Product> {
 
     public CreateProductCommand {
@@ -20,14 +19,5 @@ public record CreateProductCommand(
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(description, "description");
         Objects.requireNonNull(type, "type");
-
-        // Optional map: allow null → treat as empty, and validate entries if present
-        if (initialAvailabilityByBranch != null) {
-            for (var e : initialAvailabilityByBranch.entrySet()) {
-                var branch = Objects.requireNonNull(e.getKey(), "branchCode");
-                var qty = Objects.requireNonNull(e.getValue(), "availableQuantity");
-                if (qty < 0) throw new IllegalArgumentException("availableQuantity for branch " + branch + " must be >= 0");
-            }
-        }
     }
 }

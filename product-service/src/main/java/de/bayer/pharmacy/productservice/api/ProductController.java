@@ -41,8 +41,7 @@ public class ProductController {
                 request.sku(),
                 request.name(),
                 request.description(),
-                ProductType.valueOf(request.type()),
-                request.initialAvailabilityByBranch()
+                ProductType.valueOf(request.type())
         );
 
         Product product = bus.dispatch(command);

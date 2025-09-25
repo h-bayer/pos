@@ -11,7 +11,7 @@ public class CosmeticProductCreator extends AbstractProductCreator {
     @Override public ProductType type() { return ProductType.COSMETIC; }
 
     @Override
-    public Product create(long sku, String name, String description, Map<String, Integer> initialAvailabilityByBranch) {
-        return baseWithAvailability(sku, name, description, ProductType.COSMETIC, initialAvailabilityByBranch);
+    public Product create(long sku, String name, String description) {
+        return baseWithAvailability(sku, name, description, ProductType.COSMETIC);
     }
 }
