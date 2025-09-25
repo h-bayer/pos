@@ -1,7 +1,7 @@
 package de.bayer.pharmacy.productservice.api.dto;
 
-import de.bayer.pharmacy.productservice.product.Product;
-import de.bayer.pharmacy.productservice.product.ProductImage;
+import de.bayer.pharmacy.productservice.domain.product.Product;
+import de.bayer.pharmacy.productservice.domain.product.ProductImage;
 
 import java.util.stream.Collectors;
 
