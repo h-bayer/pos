@@ -18,12 +18,12 @@ public class OutboxRelay {
     }
 
     // Poll the outbox and publish (demo-friendly; for prod consider CDC/Debezium or tx-producer)
-    @Scheduled(fixedDelay = 500) // every 500 ms
+    @Scheduled(fixedDelay = 10500) //in ms
     @Transactional
     public void flush() {
         List<OutboxMessage> batch = outbox.fetchBatch(PageRequest.of(0, 100));
         for (OutboxMessage m : batch) {
-            //bus.publish(m.getType(), m.getPayload());
+            bus.publish(m.getType(), m.getPayload());
             m.markPublished();
         }
         outbox.saveAll(batch);

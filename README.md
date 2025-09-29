@@ -31,6 +31,10 @@ for Kafka
 ```bash
 kubectl -n pos port-forward svc/redpanda 19092:9092 &
 ```
+## deploy all of the serices
+```bash
+helm upgrade --install pos deploy/helm/pos -n pos -f deploy/helm/pos/values.yaml
+```
 
 ## Build single service and deploy using helm
 ```bash

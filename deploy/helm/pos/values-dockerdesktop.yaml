@@ -31,6 +31,7 @@ pricing-service:
       value: "redis"
 
 product-service:
+  enabled: true
   image:
     repository: "product-service"
     tag: "0.0.1"

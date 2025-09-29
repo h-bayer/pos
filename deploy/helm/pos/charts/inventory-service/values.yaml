@@ -4,6 +4,7 @@ image:
   pullPolicy: IfNotPresent
 
 replicas: 1
+enabled: true
 service:
   type: ClusterIP
   port: 80

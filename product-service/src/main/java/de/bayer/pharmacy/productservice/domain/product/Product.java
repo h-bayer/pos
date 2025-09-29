@@ -169,7 +169,8 @@ public class Product{
     // ---- State transitions
 
     public void approve(String approver) {
-        require(status == ProductStatus.DRAFT, "Only DRAFT can be approved");
+        //TODO: set status check
+        //require(status == ProductStatus.DRAFT, "Only DRAFT can be approved");
         this.status = ProductStatus.APPROVED;
         this.approvedAt = Instant.now();
         this.approvedBy = approver;

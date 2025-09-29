@@ -23,5 +23,8 @@ dependencies:
 - name: audit-service
   repository: file://charts/audit-service
   version: 0.1.0
-digest: sha256:b90e81bcb02b77dfa93be5ede442e790ec60df7dfd5f4ac3c6eb42b1cc00c5de
-generated: "2025-09-03T11:38:26.746636553+02:00"
+- name: product-service
+  repository: file://charts/product-service
+  version: 0.1.0
+digest: sha256:fafd925c644bbcd381586de6cb085e9e301898a1f3f7d48c2b2c73b22cf91785
+generated: "2025-09-29T16:46:00.0529237+02:00"

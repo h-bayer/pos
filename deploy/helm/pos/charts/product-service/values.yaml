@@ -1,9 +1,10 @@
 image:
-  repository: your-registry.example.com/pharmacy/pricing-service
+  repository: your-registry.example.com/pharmacy/product-service
   tag: "0.0.1"
   pullPolicy: IfNotPresent
 
 replicas: 1
+enabled: true
 service:
   type: ClusterIP
   port: 80

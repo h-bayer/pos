@@ -12,3 +12,4 @@ data:
     CREATE DATABASE pos_insurer_integration_service OWNER admin;
     CREATE DATABASE pos_label_localization_service OWNER admin;
     CREATE DATABASE pos_audit_service OWNER admin;
+    CREATE DATABASE pos_product_service OWNER admin;
