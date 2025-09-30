@@ -17,7 +17,8 @@ kubectl port-forward svc/postgres -n $NAMESPACE 5432:5432 > /tmp/portfwd-postgre
 
 # Port forward Kafka (assuming Redpanda or Kafka service runs on 9092 inside cluster)
 echo "Forwarding Kafka on localhost:19092 ..."
-kubectl port-forward svc/redpanda -n $NAMESPACE 19092:9092 > /tmp/portfwd-kafka.log 2>&1 &
+kubectl port-forward svc/redpanda -n $NAMESPACE 19092:19092 > /tmp/portfwd-kafka.log 2>&1 &
+kubectl port-forward svc/redpanda -n $NAMESPACE 18081:8081 > /tmp/portfwd-kafka-registry.log 2>&1 &
 
 # Port forward Redis (K8s service: redis, local: 6379 → pod: 6379)
 echo "Forwarding Redis on localhost:6379 ..."

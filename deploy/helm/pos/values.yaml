@@ -3,6 +3,8 @@ global:
     registry: your-registry.example.com/pharmacy
   env:
     SPRING_PROFILES_ACTIVE: "k8s"
+    JAVA_OPTS: "-XX:MaxRAMPercentage=75 -XX:+UseSerialGC"
+    SPRING_KAFKA_PROPERTIES_SCHEMA_REGISTRY_URL: "http://redpanda:8081"
 
 edge-pos-api:
   image:

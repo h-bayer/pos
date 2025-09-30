@@ -44,8 +44,15 @@ product-service:
       value: "admin"
     - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
       value: "redpanda:9092"
+    - name: SPRING_KAFKA_PROPERTIES_SCHEMA_REGISTRY_URL
+      value: "http://redpanda:8081"
+    - name: APP_TOPICS_PRODUCTEVENTS
+      value: "product.events"
+    - name: APP_TOPICS_INVENTORYEVENTS
+      value: "inventory.events"
     - name: SPRING_DATA_REDIS_HOST
       value: "redis"
+
 
 prescription-service:
   image:
@@ -64,6 +71,7 @@ prescription-service:
       value: "redis"
 
 inventory-service:
+  enabled: false
   image:
     repository: "inventory-service"
     tag: "0.0.1"
@@ -76,6 +84,12 @@ inventory-service:
       value: "admin"
     - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
       value: "redpanda:9092"
+    - name: SPRING_KAFKA_PROPERTIES_SCHEMA_REGISTRY_URL
+      value: "http://redpanda:8081"
+    - name: APP_TOPICS_PRODUCTEVENTS
+      value: "product.events"
+    - name: APP_TOPICS_INVENTORYEVENTS
+      value: "inventory.events"
     - name: SPRING_DATA_REDIS_HOST
       value: "redis"
 

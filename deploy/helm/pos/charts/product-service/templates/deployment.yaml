@@ -22,6 +22,7 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ default "k8s" .Values.global.env.SPRING_PROFILES_ACTIVE | quote }}
+
 {{- if .Values.extraEnv }}
 {{ toYaml .Values.extraEnv | indent 12 }}
 {{- end }}

@@ -2,12 +2,14 @@ package de.bayer.pharmacy.productservice.infra.outbox;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@EnableScheduling
 public class OutboxRelay {
     private final OutboxRepository outbox;
     private final IMessageBus bus;

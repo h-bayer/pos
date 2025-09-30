@@ -1,46 +1,45 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: redpanda-pvc
+labels: { app: redpanda }
 spec:
-  accessModes: ["ReadWriteOnce"]
-  resources: { requests: { storage: 5Gi } }
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: redpanda
-spec:
-  replicas: 1
-  selector: { matchLabels: { app: redpanda } }
-  template:
-    metadata: { labels: { app: redpanda } }
-    spec:
-      containers:
-        - name: redpanda
-          image: {{ .Values.redpanda.image }}
-          args:
-            - redpanda
-            - start
-            - --overprovisioned
-            - --smp
-            - "1"
-            - --memory
-            - 512M
-            - --reserve-memory
-            - 0M
-            - --node-id
-            - "0"
-            - --check=false
-          ports:
-            - containerPort: 9092
-            - containerPort: 9644
-          volumeMounts:
-            - { name: redpandadata, mountPath: /var/lib/redpanda/data }
-      volumes:
-        - name: redpandadata
-          persistentVolumeClaim:
-            claimName: redpanda-pvc
+containers:
+  - name: redpanda
+image: {{ .Values.redpanda.image }}
+args:
+  - redpanda
+  - start
+  - --overprovisioned
+  - --smp
+  - "1"
+  - --memory
+  - 512M
+  - --reserve-memory
+  - 0M
+  - --node-id
+  - "0"
+  - --check=false
+    # === zwei Kafka-Listener: in-cluster + debug ===
+  - --kafka-addr
+  - PLAINTEXT://0.0.0.0:9092{{- if .Values.redpanda.debug.enabled }},DEBUG://0.0.0.0:{{ .Values.redpanda.debug.port }}{{- end }}
+  - --advertise-kafka-addr
+  - PLAINTEXT://redpanda:9092{{- if .Values.redpanda.debug.enabled }},DEBUG://localhost:{{ .Values.redpanda.debug.port }}{{- end }}
+# Schema Registry (ein Listener genügt; forwarden wir bei Bedarf)
+  - --schema-registry-addr
+  - http://0.0.0.0:8081
+  - --advertise-schema-registry-addr
+  - http://redpanda:8081
+ports:
+  - { name: kafka, containerPort: 9092 }
+      {{- if .Values.redpanda.debug.enabled }}
+  - { name: kafka-debug, containerPort: {{ .Values.redpanda.debug.port }} }
+      {{- end }}
+  - { name: admin, containerPort: 9644 }
+  - { name: schemareg, containerPort: 8081 }
+volumeMounts:
+  - { name: redpandadata, mountPath: /var/lib/redpanda/data }
+volumes:
+  - name: redpandadata
+persistentVolumeClaim:
+claimName: redpanda-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -49,9 +48,67 @@ metadata:
 spec:
   selector: { app: redpanda }
   ports:
-    - name: kafka
-      port: 9092
-      targetPort: 9092
-    - name: admin
-      port: 9644
-      targetPort: 9644
+    - { name: kafka,      port: 9092,  targetPort: 9092 }
+    {{- if .Values.redpanda.debug.enabled }}
+    - { name: kafka-debug, port: {{ .Values.redpanda.debug.port }}, targetPort: {{ .Values.redpanda.debug.port }} }
+    {{- end }}
+    - { name: admin,      port: 9644,  targetPort: 9644 }
+    - { name: schemareg,  port: 8081,  targetPort: 8081 }
+
+{{/*apiVersion: v1*/}}
+{{/*kind: PersistentVolumeClaim*/}}
+{{/*metadata:*/}}
+{{/*  name: redpanda-pvc*/}}
+{{/*spec:*/}}
+{{/*  accessModes: ["ReadWriteOnce"]*/}}
+{{/*  resources: { requests: { storage: 5Gi } }*/}}
+{{/*---*/}}
+{{/*apiVersion: apps/v1*/}}
+{{/*kind: Deployment*/}}
+{{/*metadata:*/}}
+{{/*  name: redpanda*/}}
+{{/*spec:*/}}
+{{/*  replicas: 1*/}}
+{{/*  selector: { matchLabels: { app: redpanda } }*/}}
+{{/*  template:*/}}
+{{/*    metadata: { labels: { app: redpanda } }*/}}
+{{/*    spec:*/}}
+{{/*      containers:*/}}
+{{/*        - name: redpanda*/}}
+{{/*          image: {{ .Values.redpanda.image }}*/}}
+{{/*          args:*/}}
+{{/*            - redpanda*/}}
+{{/*            - start*/}}
+{{/*            - --overprovisioned*/}}
+{{/*            - --smp*/}}
+{{/*            - "1"*/}}
+{{/*            - --memory*/}}
+{{/*            - 512M*/}}
+{{/*            - --reserve-memory*/}}
+{{/*            - 0M*/}}
+{{/*            - --node-id*/}}
+{{/*            - "0"*/}}
+{{/*            - --check=false*/}}
+{{/*          ports:*/}}
+{{/*            - containerPort: 9092*/}}
+{{/*            - containerPort: 9644*/}}
+{{/*          volumeMounts:*/}}
+{{/*            - { name: redpandadata, mountPath: /var/lib/redpanda/data }*/}}
+{{/*      volumes:*/}}
+{{/*        - name: redpandadata*/}}
+{{/*          persistentVolumeClaim:*/}}
+{{/*            claimName: redpanda-pvc*/}}
+{{/*---*/}}
+{{/*apiVersion: v1*/}}
+{{/*kind: Service*/}}
+{{/*metadata:*/}}
+{{/*  name: redpanda*/}}
+{{/*spec:*/}}
+{{/*  selector: { app: redpanda }*/}}
+{{/*  ports:*/}}
+{{/*    - name: kafka*/}}
+{{/*      port: 9092*/}}
+{{/*      targetPort: 9092*/}}
+{{/*    - name: admin*/}}
+{{/*      port: 9644*/}}
+{{/*      targetPort: 9644*/}}

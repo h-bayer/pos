@@ -9,3 +9,6 @@ redis:
 
 redpanda:
   image: redpandadata/redpanda:latest
+  debug:
+    enabled: true
+    port: 19092

@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 		"de.bayer.pharmacy.common",   // the common module
 		"de.bayer.pharmacy.productservice"   // your app/domain
 })
-@EnableScheduling
 public class ProductServiceApplication {
 
 	public static void main(String[] args) {
