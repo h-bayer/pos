@@ -1,0 +1,11 @@
+{
+"type": "record",
+"namespace": "com.example.avro",
+"name": "ProductCreated",
+"fields": [
+{"name": "productId", "type": "string"},
+{"name": "sku", "type": "string"},
+{"name": "name", "type": "string"},
+{"name": "eventVersion", "type": "string", "default": "1"}
+]
+}

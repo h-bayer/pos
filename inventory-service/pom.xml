@@ -58,9 +58,16 @@
     </dependency>
 
     <!-- Kafka -->
+    <!-- Kafka -->
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
+    <dependency>
+      <groupId>io.confluent</groupId>
+      <artifactId>kafka-avro-serializer</artifactId>
+      <version>8.0.0</version>
     </dependency>
 
     <!-- Test -->
@@ -70,7 +77,16 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+      <id>confluent</id>
+      <url>https://packages.confluent.io/maven/</url>
+    </repository>
+  </repositories>
   <build>
     <plugins>
       <plugin>

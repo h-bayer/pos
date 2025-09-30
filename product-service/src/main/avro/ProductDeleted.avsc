@@ -1,0 +1,10 @@
+{
+"type": "record",
+"namespace": "com.example.avro",
+"name": "ProductDeleted",
+"fields": [
+{"name": "productId", "type": "string"},
+{"name": "reason", "type": ["null","string"], "default": null},
+{"name": "eventVersion", "type": "string", "default": "1"}
+]
+}

@@ -12,3 +12,6 @@ redpanda:
   debug:
     enabled: true
     port: 19092
+  persistence:
+    enabled: true
+    size: 5Gi
