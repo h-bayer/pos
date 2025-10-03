@@ -1,4 +1,4 @@
-@baseUrl = http://localhost:8081
+@baseUrl = http://localhost:8085
 @contentType = application/json
 
 ### 1) Create product 100001

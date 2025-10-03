@@ -1,10 +1,7 @@
 package de.bayer.pharmacy.productservice.domain.product;
 
 
-import de.bayer.pharmacy.productservice.domain.product.events.ProductApprovedEvent;
-import de.bayer.pharmacy.productservice.domain.product.events.ProductDeletedEvent;
-import de.bayer.pharmacy.productservice.domain.product.events.ProductPublishedEvent;
-import de.bayer.pharmacy.productservice.domain.product.events.ProductRevertedToDraftEvent;
+import de.bayer.pharmacy.productservice.domain.product.events.*;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -207,7 +204,7 @@ public class Product{
 
 
     //JPA needs empty constructor
-    public Product()
+    protected Product()
     {
 
     }
@@ -218,6 +215,8 @@ public class Product{
         this.name = name;
         this.description = description;
         this.createdAt = Instant.now();
+
+        record(new ProductCreatedEvent(sku));
     }
 
     private void require(boolean cond, String msg) {
@@ -251,4 +250,11 @@ public class Product{
         return copy;
     }
 
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
 }

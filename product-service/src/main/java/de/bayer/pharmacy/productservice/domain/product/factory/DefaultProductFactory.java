@@ -21,6 +21,7 @@ class DefaultProductFactory implements IProductFactory {
     public Product create(long sku, String name, String desc, ProductType type) {
         var creator = Optional.ofNullable(creators.get(type))
                 .orElseThrow(() -> new IllegalArgumentException("No creator for " + type));
+
         return creator.create(sku, name, desc);
     }
 }

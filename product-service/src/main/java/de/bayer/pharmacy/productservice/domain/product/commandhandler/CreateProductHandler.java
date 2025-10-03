@@ -5,6 +5,7 @@ import de.bayer.pharmacy.productservice.domain.product.Product;
 import de.bayer.pharmacy.productservice.domain.product.commands.CreateProductCommand;
 import de.bayer.pharmacy.productservice.domain.product.factory.IProductFactory;
 import de.bayer.pharmacy.productservice.domain.product.repository.ProductRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +14,12 @@ public class CreateProductHandler implements ICommandHandler<CreateProductComman
 
     private final ProductRepository repo;
     private final IProductFactory productFactory;
+    private final ApplicationEventPublisher publisher;
 
-    public CreateProductHandler(ProductRepository repo, IProductFactory productFactory) {
+    public CreateProductHandler(ProductRepository repo, IProductFactory productFactory, ApplicationEventPublisher publisher) {
         this.repo = repo;
         this.productFactory = productFactory;
+        this.publisher = publisher;
     }
 
     @Override public Class<CreateProductCommand> commandType() {
@@ -25,6 +28,7 @@ public class CreateProductHandler implements ICommandHandler<CreateProductComman
 
     @Override @Transactional
     public Product handle(CreateProductCommand cmd) {
+        //TODO: check invariants!!
         var product = productFactory.create(
                 cmd.sku(), cmd.name(), cmd.description(), cmd.type()
         );
@@ -33,7 +37,7 @@ public class CreateProductHandler implements ICommandHandler<CreateProductComman
         // repo expects the concrete entity type; no interface possible
         var result = repo.save(product);
 
-
+        product.pullDomainEvents().forEach(publisher::publishEvent);
 
         return result;
     }

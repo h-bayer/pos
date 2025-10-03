@@ -6,6 +6,10 @@ management:
 springdoc:
   api-docs.path: /v3/api-docs
   swagger-ui.path: /swagger-ui.html
+app:
+  topics:
+    productEvents: productEvents
+    inventoryEvents: inventoryEvents
 
 spring:
   application.name: product-api
