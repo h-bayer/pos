@@ -3,82 +3,131 @@ package de.bayer.pharmacy.productservice.infra.outbox;
 import jakarta.persistence.*;
 
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "outbox")
 public class OutboxMessage {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-    String topic;
-    String keyRef; // productId
-    String type; // ProductCreated/ProductDeleted/StockLevelChanged
-    @Lob String payload; // JSON blob with fields needed to build Avro
-    Instant createdAt = Instant.now();
-    boolean published = false;
-    String error;
+    @Id
+    @GeneratedValue
+    private UUID id;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(nullable = false)
+    private String topic;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "key_ref")
+    private String keyRef;
 
-    public String getTopic() {
-        return topic;
-    }
+    @Column(nullable = false)
+    private String type;
 
-    public void setTopic(String topic) {
+    @Lob
+    @Column(nullable = false)
+    private String payload;
+
+    @Lob
+    private String headers;  // optional, JSON of extra headers
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OutboxMessageStatus status = OutboxMessageStatus.PENDING;
+
+    @Column(name = "attempt_count", nullable = false)
+    private int attemptCount = 0;
+
+    @Column(name = "next_attempt_at", nullable = false)
+    private OffsetDateTime nextAttemptAt = OffsetDateTime.now();
+
+    @Column(name = "last_error")
+    private String lastError;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @Column(name = "published_at")
+    private OffsetDateTime publishedAt;
+
+    // ----- Constructors -----
+
+    protected OutboxMessage() {}
+
+    public OutboxMessage(String topic, String keyRef, String type, String payload) {
         this.topic = topic;
-    }
-
-    public String getKeyRef() {
-        return keyRef;
-    }
-
-    public void setKeyRef(String keyRef) {
         this.keyRef = keyRef;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
         this.type = type;
-    }
-
-    public String getPayload() {
-        return payload;
-    }
-
-    public void setPayload(String payload) {
         this.payload = payload;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
+    // ----- Business methods -----
+
+    public void markInProgress() {
+        this.status = OutboxMessageStatus.IN_PROGRESS;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
+    public void markSent() {
+        this.status = OutboxMessageStatus.SENT;
+        this.publishedAt = OffsetDateTime.now();
+        this.lastError = null;
     }
 
-    public boolean isPublished() {
-        return published;
+    public void markFailed(String error, int nextDelaySeconds) {
+        this.status = OutboxMessageStatus.PENDING;
+        this.attemptCount++;
+        this.lastError = error;
+        this.nextAttemptAt = OffsetDateTime.now().plusSeconds(nextDelaySeconds);
     }
 
-    public void setPublished(boolean published) {
-        this.published = published;
-    }
+    // ----- Getters & Setters -----
 
-    public String getError() {
-        return error;
-    }
+    public UUID getId() { return id; }
 
-    public void setError(String error) {
-        this.error = error;
+    public String getTopic() { return topic; }
+    public void setTopic(String topic) { this.topic = topic; }
+
+    public String getKeyRef() { return keyRef; }
+    public void setKeyRef(String keyRef) { this.keyRef = keyRef; }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public String getPayload() { return payload; }
+    public void setPayload(String payload) { this.payload = payload; }
+
+    public String getHeaders() { return headers; }
+    public void setHeaders(String headers) { this.headers = headers; }
+
+    public OutboxMessageStatus getStatus() { return status; }
+    public void setStatus(OutboxMessageStatus status) { this.status = status; }
+
+    public int getAttemptCount() { return attemptCount; }
+    public void setAttemptCount(int attemptCount) { this.attemptCount = attemptCount; }
+
+    public OffsetDateTime getNextAttemptAt() { return nextAttemptAt; }
+    public void setNextAttemptAt(OffsetDateTime nextAttemptAt) { this.nextAttemptAt = nextAttemptAt; }
+
+    public String getLastError() { return lastError; }
+    public void setLastError(String lastError) { this.lastError = lastError; }
+
+    public OffsetDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(OffsetDateTime createdAt) { this.createdAt = createdAt; }
+
+    public OffsetDateTime getPublishedAt() { return publishedAt; }
+    public void setPublishedAt(OffsetDateTime publishedAt) { this.publishedAt = publishedAt; }
+
+    @Override
+    public String toString() {
+        return "OutboxMessage{" +
+                "id=" + id +
+                ", topic='" + topic + '\'' +
+                ", keyRef='" + keyRef + '\'' +
+                ", type='" + type + '\'' +
+                ", status=" + status +
+                ", attemptCount=" + attemptCount +
+                ", nextAttemptAt=" + nextAttemptAt +
+                '}';
     }
 }
 

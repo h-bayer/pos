@@ -46,6 +46,9 @@ spring:
     redis:
       host: ${SPRING_DATA_REDIS_HOST:localhost}
       port: ${SPRING_DATA_REDIS_PORT:6379}
+outbox:
+  flush-interval-ms:500
+
 logging:
   level:
     root: INFO

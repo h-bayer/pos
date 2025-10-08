@@ -2,42 +2,59 @@ package de.bayer.pharmacy.inventoryservice.productevents;
 
 
 import com.example.avro.ProductPublished;
+import de.bayer.pharmacy.common.kafka.ProcessedEvent;
+import de.bayer.pharmacy.common.kafka.ProcessedEventRepository;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 
+import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductEventsConsumer {
-    //private final InventoryProductRepo repo;
-   //public ProductEventsConsumer(InventoryProductRepo repo) { this.repo = repo; }
+
+    //TODO: CDC/Debezium
+
+    private final ProcessedEventRepository processedEventRepository;
+
     private static final Logger log = LoggerFactory.getLogger(ProductEventsConsumer.class);
 
-    @KafkaListener(topics = "${app.topics.productEvents}")
-    public void onProductPublished(ConsumerRecord<String, ProductPublished> rec) {
+    public ProductEventsConsumer(ProcessedEventRepository processed) {
+        this.processedEventRepository = processed;
+    }
+
+    @RetryableTopic(
+            attempts = "5",
+            backoff = @Backoff(delay = 1000, multiplier = 2.0, maxDelay = 60000),
+            dltTopicSuffix = ".DLT",
+            autoCreateTopics = "true"
+    )
+    @KafkaListener(topics = "${app.topics.productEvents}", groupId = "${spring.kafka.consumer.group-id}")
+    public void onProductPublished(@Header("eventId") String eventId,
+                                   ConsumerRecord<String, ProductPublished> rec) {
         try {
-            var evt = rec.value();
-            log.debug(evt.toString());
-//            InventoryProduct ip = repo.findById(evt.getProductId()).orElseGet(InventoryProduct::new);
-//            ip.setProductId(evt.getProductId());
-//            ip.setSku(evt.getSku());
-//            ip.setName(evt.getName());
-//            repo.save(ip);
-            //ack.acknowledge();
+
+            if (processedEventRepository.existsByEventId(eventId)) {
+                // Already processed → skip silently
+                return;
+            }
+
+            ProductPublished evt = rec.value();
+
+            log.debug("Received product published event: {}", evt);
+
+
+
+            processedEventRepository.save(new ProcessedEvent(eventId, rec.topic(), rec.partition(), rec.offset()));
         } catch (Exception e) {
             log.error(e.getMessage());
         }
     }
 
 
-//    @KafkaListener(topics = "${app.topics.productEvents}")
-//    public void onProductDeleted(ConsumerRecord<String, ProductDeleted> rec, Acknowledgment ack) {
-//        try {
-//            var evt = rec.value();
-//            repo.deleteById(evt.getProductId());
-//            ack.acknowledge();
-//        } catch (Exception e) { ack.acknowledge(); }
-//    }
+
 }
