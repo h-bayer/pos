@@ -1,0 +1,67 @@
+server:
+  port: 8080
+management:
+  endpoints.web.exposure.include: health,info,metrics,readiness,liveness
+  endpoint.health.probes.enabled: true
+springdoc:
+  api-docs.path: /v3/api-docs
+  swagger-ui.path: /swagger-ui.html
+
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/pos_inventory_service
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      schema.registry.url: http://localhost:8081   # see (3) below; probably 18081 for local
+    consumer:
+      group-id: inventory-cg
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      auto-offset-reset: earliest
+      properties:
+        specific.avro.reader: true
+        isolation.level: read_committed
+    listener:
+      ack-mode: RECORD
+data:
+  redis:
+    host: localhost
+    port: 6379
+
+app:
+  topics:
+    productEvents: productEvents
+    inventoryEvents: inventoryEvents
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.boot: INFO
+    org.apache.kafka.clients.producer: DEBUG
+    org.apache.kafka.clients.consumer: DEBUG
+    org.apache.kafka.common.network: INFO
+    org.springframework.kafka.core.KafkaTemplate: DEBUG
+    org.springframework.kafka.listener: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+  file:
+    name: logs/application_inventory.log
+  logback:
+    rollingpolicy:
+      max-history: 7
+      max-file-size: 10MB

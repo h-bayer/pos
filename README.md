@@ -118,3 +118,40 @@ REGISTRY=registry.example.com/pharmacy VERSION=0.0.1 ./scripts/docker-build.sh
 REGISTRY=registry.example.com/pharmacy VERSION=0.0.1 ./scripts/docker-push.sh
 helm upgrade --install pos deploy/helm/pos -n pos -f deploy/helm/pos/values.yaml   --set global.image.registry=registry.example.com/pharmacy
 ```
+
+# Kafka
+```bash
+
+#create a test event and send it to Kafka
+ printf 'test-key\ttest-value\n' | kcat -b localhost:19092 -t productEvents -K $'\t' -P
+
+#check is the event is send to kafka and processed
+kcat -b localhost:19092 -t productEvents -C -o beginning -e
+
+#redpanda commands
+rpk topic list
+rpk topic delete productEvents
+rpk topic create productEvents -p 6 -r 1
+
+#for kafka running in pod (we are using redpanda so far)
+kubectl exec -it <kafka-pod-name> -n <namespace> -- bash
+cd /opt/kafka/bin
+./kafka-topics.sh --bootstrap-server localhost:9092 --list
+
+
+# Letzte N Nachrichten holen
+rpk topic consume productEvents --brokers localhost:19092 --num 10
+
+# Live mitlesen (folgt neuen Nachrichten)
+rpk topic consume productEvents --brokers localhost:19092 -f
+
+# Welche Gruppen gibt’s?
+rpk group list --brokers localhost:19092
+
+# Deine Gruppe ansehen (z. B. inventory-cg)
+rpk group describe inventory-cg --brokers localhost:19092
+
+# Offsets für productEvents an den Anfang setzen
+rpk group seek inventory-cg --to-start -t productEvents --brokers localhost:19092
+
+```

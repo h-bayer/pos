@@ -1,8 +1,13 @@
 server:
   port: 8080
 management:
-  endpoints.web.exposure.include: health,info,metrics,readiness,liveness
-  endpoint.health.probes.enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,readiness,liveness,env,configprops
+  endpoint:
+    env.show-values: ALWAYS
+    configprops.show-values: ALWAYS
 springdoc:
   api-docs.path: /v3/api-docs
   swagger-ui.path: /swagger-ui.html
@@ -28,16 +33,34 @@ spring:
     bootstrap-servers: localhost:9092
     properties:
       schema.registry.url: http://localhost:8081
+      auto.register.schemas: true
     consumer:
-      group-id: inventory-service-grp
+      group-id: product-service-grp
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
   data:
     redis:
       host: ${SPRING_DATA_REDIS_HOST:localhost}
       port: ${SPRING_DATA_REDIS_PORT:6379}
-
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.boot: INFO
+    org.apache.kafka.clients.producer: DEBUG
+    org.apache.kafka.clients.consumer: DEBUG
+    org.apache.kafka.common.network: INFO
+    org.springframework.kafka.core.KafkaTemplate: DEBUG
+    org.springframework.kafka.listener: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
+  file:
+    name: logs/application_product.log
+  logback:
+    rollingpolicy:
+      max-history: 7
+      max-file-size: 10MB

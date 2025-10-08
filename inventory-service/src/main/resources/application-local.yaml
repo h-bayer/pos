@@ -5,3 +5,4 @@ spring:
     bootstrap-servers: localhost:19092
     properties:
       schema.registry.url: http://localhost:18081
+
