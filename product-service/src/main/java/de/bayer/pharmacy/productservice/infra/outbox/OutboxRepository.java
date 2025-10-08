@@ -11,15 +11,15 @@ import java.util.List;
 
 public interface OutboxRepository extends JpaRepository<OutboxMessage, Long> {
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select m from OutboxMessage m where m.published = false order by m.id asc")
-    List<OutboxMessage> fetchBatch(Pageable pageable);
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Query("select m from OutboxMessage m where m.published = false order by m.id asc")
+//    List<OutboxMessage> fetchBatch(Pageable pageable);
 
     @Query(value = """
-      update outbox_message
+      update outbox
          set status='IN_PROGRESS'
        where id in (
-         select id from outbox_message
+         select id from outbox
           where status='PENDING'
             and next_attempt_at <= now()
           order by created_at

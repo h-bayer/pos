@@ -9,7 +9,7 @@ import java.util.UUID;
 @Table(
         name = "processed_event",
         indexes = {
-                @Index(name = "idx_processed_event_topic_partition_offset", columnList = "topic, partition, offset"),
+                @Index(name = "idx_processed_event_topic_partition_offset", columnList = "topic, kafka_partition, kafka_offset"),
                 @Index(name = "idx_processed_event_processed_at", columnList = "processed_at")
         },
         uniqueConstraints = {
@@ -31,11 +31,11 @@ public class ProcessedEvent {
     private String topic;
 
     /** Kafka partition number */
-    @Column(nullable = false)
+    @Column(name = "kafka_partition", nullable = false)
     private int partition;
 
     /** Kafka offset within the partition */
-    @Column(nullable = false)
+    @Column(name = "kafka_offset", nullable = false)
     private long offset;
 
     /** When the event was processed by this service */
