@@ -1,4 +1,4 @@
-package de.bayer.pharmacy.productservice.infra.outbox;
+package de.bayer.pharmacy.common.outbox;
 
 public interface IMessageBus {
 

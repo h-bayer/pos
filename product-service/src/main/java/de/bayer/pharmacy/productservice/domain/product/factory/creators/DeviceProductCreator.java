@@ -11,6 +11,6 @@ public class DeviceProductCreator extends AbstractProductCreator {
     @Override
     public Product create(long sku, String name, String description) {
         // Add DEVICE-specific initialization or validation here
-        return baseWithAvailability(sku, name, description, ProductType.DEVICE);
+        return buildBase(sku, name, description, ProductType.DEVICE);
     }
 }

@@ -10,6 +10,6 @@ public class CosmeticProductCreator extends AbstractProductCreator {
 
     @Override
     public Product create(long sku, String name, String description) {
-        return baseWithAvailability(sku, name, description, ProductType.COSMETIC);
+        return buildBase(sku, name, description, ProductType.COSMETIC);
     }
 }

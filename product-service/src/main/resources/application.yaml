@@ -54,11 +54,11 @@ logging:
     root: INFO
     org.springframework: INFO
     org.springframework.boot: INFO
-    org.apache.kafka.clients.producer: DEBUG
-    org.apache.kafka.clients.consumer: DEBUG
+    org.apache.kafka.clients.producer: INFO
+    org.apache.kafka.clients.consumer: INFO
     org.apache.kafka.common.network: INFO
-    org.springframework.kafka.core.KafkaTemplate: DEBUG
-    org.springframework.kafka.listener: DEBUG
+    org.springframework.kafka.core.KafkaTemplate: INFO
+    org.springframework.kafka.listener: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
   file:

@@ -1,11 +1,12 @@
-package de.bayer.pharmacy.productservice.infra.outbox;
+package de.bayer.pharmacy.productservice.infra.outbox.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.bayer.pharmacy.common.outbox.OutboxMessage;
+import de.bayer.pharmacy.common.outbox.OutboxRepository;
 import de.bayer.pharmacy.productservice.config.TopicProperties;
 import de.bayer.pharmacy.productservice.domain.product.events.ProductPublishedEvent;
 import de.bayer.pharmacy.productservice.domain.product.repository.ProductRepository;
-import de.bayer.pharmacy.productservice.infra.outbox.events.ProductApprovedIntegrationEvent;
 
 import de.bayer.pharmacy.productservice.infra.outbox.events.ProductPublishedIntegrationEvent;
 import org.springframework.stereotype.Component;

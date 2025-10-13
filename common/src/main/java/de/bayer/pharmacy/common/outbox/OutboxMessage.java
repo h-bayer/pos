@@ -1,10 +1,8 @@
-package de.bayer.pharmacy.productservice.infra.outbox;
+package de.bayer.pharmacy.common.outbox;
 
 import jakarta.persistence.*;
 
 
-import java.time.Duration;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -52,7 +50,7 @@ public class OutboxMessage {
 
     // ----- Constructors -----
 
-    protected OutboxMessage() {}
+    public OutboxMessage() {}
 
     public OutboxMessage(String topic, String keyRef, String type, String payload) {
         this.topic = topic;

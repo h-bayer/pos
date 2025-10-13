@@ -23,20 +23,37 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+
   kafka:
+    # Use the Redpanda broker you're querying with rpk
     bootstrap-servers: localhost:9092
+
+    # Common props shared by consumer/producer
     properties:
-      schema.registry.url: http://localhost:8081
+      schema.registry.url: http://localhost:8081   # <- adjust if your registry runs elsewhere
+      specific.avro.reader: true
+
     consumer:
       group-id: inventory-cg
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
       auto-offset-reset: earliest
+      # Wrap SerDe errors so DefaultErrorHandler can handle them (skip/DLT, etc.)
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
-        specific.avro.reader: true
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
         isolation.level: read_committed
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      # (optional hardening)
+      acks: all
+      linger-ms: 5
+
     listener:
       ack-mode: RECORD
+
 data:
   redis:
     host: localhost
@@ -52,11 +69,11 @@ logging:
     root: INFO
     org.springframework: INFO
     org.springframework.boot: INFO
-    org.apache.kafka.clients.producer: DEBUG
-    org.apache.kafka.clients.consumer: DEBUG
+    org.apache.kafka.clients.producer: INFO
+    org.apache.kafka.clients.consumer: INFO
     org.apache.kafka.common.network: INFO
-    org.springframework.kafka.core.KafkaTemplate: DEBUG
-    org.springframework.kafka.listener: DEBUG
+    org.springframework.kafka.core.KafkaTemplate: INFO
+    org.springframework.kafka.listener: INFO
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
   file:
