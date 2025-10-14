@@ -54,7 +54,7 @@ public class Product {
         InventoryEntry entry = new InventoryEntry(this, location, quantity);
         if (inventoryEntries.add(entry)) {
             location.getInventoryEntries().add(entry);
-            // Konsistenz: Produkt gehört auch zum Warehouse der Location
+
             addWarehouse(location.getWarehouse());
         }
     }

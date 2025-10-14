@@ -20,19 +20,19 @@ public class InventoryEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Pflicht: jedes Entry gehört zu genau 1 Produkt
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_inventory_product"))
     private Product product;
 
-    // Pflicht: und zu genau 1 StorageLocation
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "storage_location_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_inventory_location"))
     private StorageLocation storageLocation;
 
-    // Optional, aber in der Praxis sehr nützlich
+
     @Column(nullable = true)
     private Integer quantity;
 
