@@ -154,4 +154,10 @@ rpk group describe inventory-cg --brokers localhost:19092
 # Offsets für productEvents an den Anfang setzen
 rpk group seek inventory-cg --to-start -t productEvents --brokers localhost:19092
 
+# erase all data but keep topic
+rpk topic alter-config productEvents --set retention.ms=0 --brokers localhost:19092
+sleep 5   # allow background deletion
+rpk topic alter-config productEvents --set retention.ms=604800000 --brokers localhost:19092
+
+
 ```
