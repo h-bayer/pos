@@ -1,4 +1,4 @@
-package de.bayer.pharmacy.inventoryservice.domain.inventory;
+package de.bayer.pharmacy.inventoryservice.domain.model;
 
 import jakarta.persistence.*;
 
@@ -33,48 +33,19 @@ public class Product {
     )
     private Set<Warehouse> warehouses = new HashSet<>();
 
-    // Einlagerungen in konkreten StorageLocations (Join-Entität)
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<InventoryEntry> inventoryEntries = new HashSet<>();
 
-    // --- Convenience-Methoden ---
-    public void addWarehouse(Warehouse warehouse) {
-        if (warehouses.add(warehouse)) {
-            warehouse.getProducts().add(this);
-        }
-    }
 
-    public void removeWarehouse(Warehouse warehouse) {
-        if (warehouses.remove(warehouse)) {
-            warehouse.getProducts().remove(this);
-        }
-    }
 
-    public void placeIn(StorageLocation location, Integer quantity) {
-        InventoryEntry entry = new InventoryEntry(this, location, quantity);
-        if (inventoryEntries.add(entry)) {
-            location.getInventoryEntries().add(entry);
 
-            addWarehouse(location.getWarehouse());
-        }
-    }
 
-    public void removeFrom(StorageLocation location) {
-        inventoryEntries.removeIf(e -> {
-            boolean match = e.getStorageLocation().equals(location);
-            if (match) {
-                location.getInventoryEntries().remove(e);
-                e.setProduct(null);
-                e.setStorageLocation(null);
-            }
-            return match;
-        });
-    }
+
+
 
     // --- equals/hashCode nur über ID (nach Persistenz) ---
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+
         if (!(o instanceof Product other)) return false;
         return id != null && id.equals(other.id);
     }
@@ -109,7 +80,5 @@ public class Product {
         return warehouses;
     }
 
-    public Set<InventoryEntry> getInventoryEntries() {
-        return inventoryEntries;
-    }
+    
 }

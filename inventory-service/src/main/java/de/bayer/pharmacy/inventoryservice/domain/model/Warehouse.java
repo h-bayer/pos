@@ -1,9 +1,12 @@
-package de.bayer.pharmacy.inventoryservice.domain.inventory;
+package de.bayer.pharmacy.inventoryservice.domain.model;
 
+import de.bayer.pharmacy.inventoryservice.domain.exception.InsufficientStorageCapacityException;
 import jakarta.persistence.*;
 
 import java.util.*;
 
+
+// fancy stuff like splitting when storing etc omitted
 @Entity
 @Table(name = "warehouses",
         indexes = {
@@ -25,9 +28,9 @@ public class Warehouse {
     @Column(length = 512)
     private String address;
 
-    // Rückseite des n:m zu Product
-    @ManyToMany(mappedBy = "warehouses")
-    private Set<Product> products = new HashSet<>();
+//    // Rückseite des n:m zu Product
+//    @ManyToMany(mappedBy = "warehouses")
+//    private Set<Product> products = new HashSet<>();
 
     // 1:n Storage Locations
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -52,24 +55,53 @@ public class Warehouse {
                 .orElse(null);
     }
 
-    public void store(Product product, String locationCode, int quantity) {
+
+    public void store(Product product, int quantity) {
         if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
-        StorageLocation location = findStorageLocation(locationCode);
-        if (location == null)
-            throw new IllegalArgumentException("Storagelocation " + locationCode + " does not exist in warehouse " + name);
 
+        int remaining = quantity;
 
-        InventoryEntry entry = location.getInventoryEntries().stream()
-                .filter(e -> e.getProduct().equals(product))
-                .findFirst()
-                .orElseGet(() -> {
-                    InventoryEntry newEntry = new InventoryEntry(product, location, 0);
-                    location.getInventoryEntries().add(newEntry);
-                    product.getInventoryEntries().add(newEntry);
-                    return newEntry;
-                });
+        //fill free space in storage locations with the same product batch ignored for simplicity
+        for (StorageLocation storageLocation : this.getStorageLocations().stream()
+                .filter(l -> l.hasProduct(product))
+                .filter(l -> l.getFreeCapacity() > 0)
+                .toList()) {
+            int freeCapacity = storageLocation.getFreeCapacity();
 
-        entry.setQuantity(entry.getQuantity() + quantity);
+            if (remaining <= freeCapacity) {
+                storageLocation.store(product, remaining);
+                remaining = 0;
+                break;
+            } else {
+                storageLocation.store(product, freeCapacity);
+                remaining -= freeCapacity;
+            }
+        }
+
+        if (remaining > 0) {
+            for (StorageLocation storageLocation : this.getStorageLocations()
+                    .stream()
+                    .filter(l -> l.isEmpty())
+                    .filter(l -> l.getFreeCapacity() > 0)
+                    .toList()
+            ) {
+
+                int free = storageLocation.getFreeCapacity();
+
+                if (remaining <= free) {
+                    storageLocation.store(product, remaining);
+                    remaining = 0;
+                    break;
+                } else {
+                    storageLocation.store(product, free);
+                    remaining -= free;
+                }
+
+                if (remaining > 0) {
+                    throw new InsufficientStorageCapacityException(product, remaining);
+                }
+            }
+        }
     }
 
 
@@ -83,7 +115,7 @@ public class Warehouse {
                 .filter(e -> e.getProduct().equals(product))
                 .findFirst()
                 .orElseThrow(() ->
-                        new IllegalStateException("product " + product.getSku() + " is not available in location " + locationCode ));
+                        new IllegalStateException("product " + product.getSku() + " is not available in location " + locationCode));
 
         int newQty = entry.getQuantity() - quantity;
         if (newQty < 0)
@@ -92,7 +124,7 @@ public class Warehouse {
         if (newQty == 0) {
 
             location.getInventoryEntries().remove(entry);
-            product.getInventoryEntries().remove(entry);
+            //product.getInventoryEntries().remove(entry);
         } else {
             entry.setQuantity(newQty);
         }
@@ -141,9 +173,9 @@ public class Warehouse {
         this.address = address;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
+//    public Set<Product> getProducts() {
+//        return products;
+//    }
 
     public List<StorageLocation> getStorageLocations() {
         return storageLocations;

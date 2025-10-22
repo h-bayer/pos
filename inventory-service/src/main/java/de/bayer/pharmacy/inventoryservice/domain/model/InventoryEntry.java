@@ -1,4 +1,4 @@
-package de.bayer.pharmacy.inventoryservice.domain.inventory;
+package de.bayer.pharmacy.inventoryservice.domain.model;
 
 import jakarta.persistence.*;
 
@@ -35,6 +35,8 @@ public class InventoryEntry {
 
     @Column(nullable = true)
     private Integer quantity;
+
+
 
     public InventoryEntry() {
     }
