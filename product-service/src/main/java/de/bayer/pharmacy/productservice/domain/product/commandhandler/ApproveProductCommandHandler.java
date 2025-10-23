@@ -3,20 +3,18 @@ package de.bayer.pharmacy.productservice.domain.product.commandhandler;
 import de.bayer.pharmacy.common.commandhandling.ICommandHandler;
 import de.bayer.pharmacy.productservice.domain.product.Product;
 import de.bayer.pharmacy.productservice.domain.product.commands.ApproveProductCommand;
-import de.bayer.pharmacy.productservice.domain.product.commands.CreateProductCommand;
-import de.bayer.pharmacy.productservice.domain.product.factory.IProductFactory;
 import de.bayer.pharmacy.productservice.domain.product.repository.ProductRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class ApproveProductHandler implements ICommandHandler<ApproveProductCommand, Product> {
+public class ApproveProductCommandHandler implements ICommandHandler<ApproveProductCommand, Product> {
 
     private final ProductRepository repo;
     private final ApplicationEventPublisher publisher;
 
-    public ApproveProductHandler(ProductRepository repo, ApplicationEventPublisher publisher) {
+    public ApproveProductCommandHandler(ProductRepository repo, ApplicationEventPublisher publisher) {
         this.repo = repo;
 
         this.publisher = publisher;

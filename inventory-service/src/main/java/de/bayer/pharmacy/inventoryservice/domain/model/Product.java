@@ -22,23 +22,34 @@ public class Product {
     @Column(nullable = false, length = 255)
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProductStatus status;
 
-    // Bidirektionales n:m zu Warehouse
-    @ManyToMany
-    @JoinTable(
-            name = "warehouse_products",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "warehouse_id"),
-            uniqueConstraints = @UniqueConstraint(name = "uk_warehouse_product", columnNames = {"product_id", "warehouse_id"})
-    )
-    private Set<Warehouse> warehouses = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ProductType type;
 
 
+//    // Bidirektionales n:m zu Warehouse
+//    @ManyToMany
+//    @JoinTable(
+//            name = "warehouse_products",
+//            joinColumns = @JoinColumn(name = "product_id"),
+//            inverseJoinColumns = @JoinColumn(name = "warehouse_id"),
+//            uniqueConstraints = @UniqueConstraint(name = "uk_warehouse_product", columnNames = {"product_id", "warehouse_id"})
+//    )
+//    private Set<Warehouse> warehouses = new HashSet<>();
 
 
+    public Product(String sku, String name) {
+        this.sku = sku;
+        this.name = name;
+    }
 
+    public Product() {
 
-
+    }
 
 
     // --- equals/hashCode nur über ID (nach Persistenz) ---
@@ -56,6 +67,24 @@ public class Product {
     }
 
     // --- Getter/Setter ---
+
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
+    }
+
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
+    }
+
     public Long getId() {
         return id;
     }
@@ -76,9 +105,7 @@ public class Product {
         this.name = name;
     }
 
-    public Set<Warehouse> getWarehouses() {
-        return warehouses;
-    }
 
-    
+
+
 }

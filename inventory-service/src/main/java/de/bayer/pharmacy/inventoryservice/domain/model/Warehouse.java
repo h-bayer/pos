@@ -4,6 +4,7 @@ import de.bayer.pharmacy.inventoryservice.domain.exception.InsufficientStorageCa
 import jakarta.persistence.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 // fancy stuff like splitting when storing etc omitted
@@ -130,6 +131,28 @@ public class Warehouse {
         }
     }
 
+    public Map<Product, Integer> getStoredProductsWithQuantity() {
+        return this.storageLocations
+                .stream()
+                .flatMap(l -> l.getInventoryEntries().stream())
+                .collect(Collectors.toMap(
+                        InventoryEntry::getProduct,
+                        InventoryEntry::getQuantity,
+                        Integer::sum
+                ));
+    }
+
+    public Map<StorageLocation, Map<Product, Integer>> getQuantitiesPerLocation() {
+        return storageLocations.stream()
+                .collect(Collectors.toMap(
+                        loc -> loc,
+                        loc -> loc.getInventoryEntries().stream()
+                                .collect(Collectors.toMap(
+                                        InventoryEntry::getProduct,
+                                        InventoryEntry::getQuantity
+                                ))
+                ));
+    }
 
     // equals/hashCode
     @Override
@@ -172,10 +195,6 @@ public class Warehouse {
     public void setAddress(String address) {
         this.address = address;
     }
-
-//    public Set<Product> getProducts() {
-//        return products;
-//    }
 
     public List<StorageLocation> getStorageLocations() {
         return storageLocations;

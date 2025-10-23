@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public ResponseEntity create(@Valid @RequestBody ProductRequest request) {
+    public ResponseEntity delete(@Valid @RequestBody ProductRequest request) {
         var command = new DeleteProductCommand(
                 request.sku()
         );

@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class CreateProductHandler implements ICommandHandler<CreateProductCommand, Product> {
+public class CreateProductCommandHandler implements ICommandHandler<CreateProductCommand, Product> {
 
     private final ProductRepository repo;
     private final IProductFactory productFactory;
     private final ApplicationEventPublisher publisher;
 
-    public CreateProductHandler(ProductRepository repo, IProductFactory productFactory, ApplicationEventPublisher publisher) {
+    public CreateProductCommandHandler(ProductRepository repo, IProductFactory productFactory, ApplicationEventPublisher publisher) {
         this.repo = repo;
         this.productFactory = productFactory;
         this.publisher = publisher;
