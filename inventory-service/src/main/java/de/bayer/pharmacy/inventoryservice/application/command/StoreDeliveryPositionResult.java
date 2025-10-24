@@ -1,26 +1,37 @@
 package de.bayer.pharmacy.inventoryservice.application.command;
 
 public class StoreDeliveryPositionResult {
-    private long sku;
-    private int openAmount = 0;
+    private String sku;
+    private int remainingCount = 0;
 
     public boolean hasOpenAmount() {
-        return openAmount > 0;
+        return remainingCount > 0;
     }
 
-    public long getSku() {
+    public String getSku() {
         return sku;
     }
 
-    public void setSku(long sku) {
+
+    public StoreDeliveryPositionResult setSku(String sku) {
         this.sku = sku;
+        return this;
     }
 
-    public int getOpenAmount() {
-        return openAmount;
+    public int getRemainingCount() {
+        return remainingCount;
     }
 
-    public void setOpenAmount(int openAmount) {
-        this.openAmount = openAmount;
+    public StoreDeliveryPositionResult setRemainingCount(int remainingCount) {
+        this.remainingCount = remainingCount;
+        return this;
+    }
+
+    public StoreDeliveryPositionResult() {
+    }
+
+    public StoreDeliveryPositionResult(String sku, int remainingCount) {
+        this.sku = sku;
+        this.remainingCount = remainingCount;
     }
 }

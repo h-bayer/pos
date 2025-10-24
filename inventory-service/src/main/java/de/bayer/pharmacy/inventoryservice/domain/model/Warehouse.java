@@ -1,6 +1,7 @@
 package de.bayer.pharmacy.inventoryservice.domain.model;
 
-import de.bayer.pharmacy.inventoryservice.domain.exception.InsufficientStorageCapacityException;
+import de.bayer.pharmacy.inventoryservice.application.command.StoreDeliveryPositionResult;
+import de.bayer.pharmacy.inventoryservice.domain.exception.ProductStorageException;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -57,16 +58,25 @@ public class Warehouse {
     }
 
 
-    public void store(Product product, int quantity) {
+    protected boolean canProductBeStored(Product product) {
+        return product.getStatus() == ProductStatus.APPROVED;
+    }
+
+    public StoreDeliveryPositionResult store(Product product, int quantity) {
         if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
+
+        if(!canProductBeStored(product)) {
+            throw new ProductStorageException(product,"Status not appropriate for storing" );
+        }
 
         int remaining = quantity;
 
-        //fill free space in storage locations with the same product batch ignored for simplicity
+        //fill free space in storage locations with the same product; batch ignored for simplicity
         for (StorageLocation storageLocation : this.getStorageLocations().stream()
                 .filter(l -> l.hasProduct(product))
                 .filter(l -> l.getFreeCapacity() > 0)
                 .toList()) {
+
             int freeCapacity = storageLocation.getFreeCapacity();
 
             if (remaining <= freeCapacity) {
@@ -98,11 +108,12 @@ public class Warehouse {
                     remaining -= free;
                 }
 
-                if (remaining > 0) {
-                    throw new InsufficientStorageCapacityException(product, remaining);
-                }
+
             }
         }
+
+        return new StoreDeliveryPositionResult(product.getSku(), remaining);
+
     }
 
 

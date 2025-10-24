@@ -34,6 +34,14 @@ public class StorageLocation {
     // optional: Kapazitätsangaben
     private Integer capacityUnits;
 
+    public int getStoredQuantity(Product product)
+    {
+        return this.inventoryEntries.stream()
+                .filter(inventoryEntry -> inventoryEntry.getProduct().equals(product))
+                .mapToInt(InventoryEntry::getQuantity)
+                .sum();
+    }
+
     public void store(Product product, int quantity) {
         if(quantity > getFreeCapacity()) {
             throw new IllegalArgumentException("Quantity exceeds capacity");
@@ -48,6 +56,8 @@ public class StorageLocation {
                         () -> this.inventoryEntries.add(new InventoryEntry(product,this, quantity))
                 );
     }
+
+
 
     public boolean isEmpty() {
         return inventoryEntries.isEmpty();
@@ -84,16 +94,18 @@ public class StorageLocation {
         return code;
     }
 
-    public void setCode(String code) {
+    public StorageLocation setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public Warehouse getWarehouse() {
         return warehouse;
     }
 
-    public void setWarehouse(Warehouse warehouse) {
+    public StorageLocation setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+        return this;
     }
 
     public Set<InventoryEntry> getInventoryEntries() {
@@ -104,7 +116,15 @@ public class StorageLocation {
         return capacityUnits;
     }
 
-    public void setCapacityUnits(Integer capacityUnits) {
+    public StorageLocation setCapacityUnits(Integer capacityUnits) {
+        this.capacityUnits = capacityUnits;
+        return this;
+    }
+
+    public StorageLocation(Integer capacityUnits) {
         this.capacityUnits = capacityUnits;
     }
+
+    //for jpa
+    protected StorageLocation() {}
 }
