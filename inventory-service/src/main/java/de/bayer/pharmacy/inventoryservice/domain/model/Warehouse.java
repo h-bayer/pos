@@ -39,11 +39,14 @@ public class Warehouse {
     @OrderBy("code ASC")
     private List<StorageLocation> storageLocations = new ArrayList<>();
 
+    public void createNewStorageLocation(String code, int quantity)  {
+        var storageLocation = new StorageLocation(quantity);
+        storageLocation.setCode(code);
+        storageLocation.setWarehouse(this);
 
-    public void addStorageLocation(StorageLocation loc) {
-        storageLocations.add(loc);
-        loc.setWarehouse(this);
+        this.storageLocations.add(storageLocation);
     }
+
 
     public void removeStorageLocation(StorageLocation loc) {
         storageLocations.remove(loc);
@@ -72,7 +75,7 @@ public class Warehouse {
         int remaining = quantity;
 
         //fill free space in storage locations with the same product; batch ignored for simplicity
-        for (StorageLocation storageLocation : this.getStorageLocations().stream()
+        for (StorageLocation storageLocation : this.storageLocations.stream()
                 .filter(l -> l.hasProduct(product))
                 .filter(l -> l.getFreeCapacity() > 0)
                 .toList()) {
@@ -90,7 +93,7 @@ public class Warehouse {
         }
 
         if (remaining > 0) {
-            for (StorageLocation storageLocation : this.getStorageLocations()
+            for (StorageLocation storageLocation : this.storageLocations
                     .stream()
                     .filter(l -> l.isEmpty())
                     .filter(l -> l.getFreeCapacity() > 0)
@@ -165,6 +168,14 @@ public class Warehouse {
                 ));
     }
 
+    public int getStoredQuantity(Product product) {
+        return this.storageLocations.stream()
+                .filter(l -> l.hasProduct(product))
+                .flatMap(l -> l.getInventoryEntries().stream())
+                .mapToInt(InventoryEntry::getQuantity)
+                .sum();
+    }
+
     // equals/hashCode
     @Override
     public boolean equals(Object o) {
@@ -207,7 +218,6 @@ public class Warehouse {
         this.address = address;
     }
 
-    public List<StorageLocation> getStorageLocations() {
-        return storageLocations;
-    }
+
+
 }

@@ -17,22 +17,15 @@ class WarehouseTest {
 
     private Product product;
 
-    private StorageLocation loc1;
-
-    private StorageLocation loc2;
 
     @BeforeEach
     void setUp() {
         warehouse = new Warehouse();
 
-         loc1 = new StorageLocation(10); // capacity 10
-         loc2 = new StorageLocation(5);  // capacity 5
-
-        warehouse.addStorageLocation(loc1);
-        warehouse.addStorageLocation(loc2);
+        warehouse.createNewStorageLocation("AF-12", 10);
+        warehouse.createNewStorageLocation("AF-13", 5);
 
         product = new Product("12345-12", "TestProduct");
-
     }
 
     @Test
@@ -62,12 +55,12 @@ class WarehouseTest {
         product.setStatus(ProductStatus.APPROVED);
 
         // pre-fill first location with 5 units
-        loc1.store(product, 5);
+        warehouse.store(product, 5);
 
         var result = warehouse.store(product, 5);
 
         assertEquals(0, result.getRemainingCount());
-        assertEquals(10, loc1.getStoredQuantity(product)); // filled up
+        assertEquals(10, warehouse.getStoredQuantity(product)); // filled up
     }
 
     @Test
@@ -76,11 +69,11 @@ class WarehouseTest {
         product = new Product("12345-12", "TestProduct");
         product.setStatus(ProductStatus.APPROVED);
 
-        loc1.store(product, 10); // full
+        warehouse.store(product, 10); // full
 
         var result = warehouse.store(product, 7);
 
-        assertEquals(2, result.getRemainingCount()); // loc2 can take 5 only
-        assertEquals(5, loc2.getStoredQuantity(product));
+        assertEquals(2, result.getRemainingCount());
+        assertEquals(15, warehouse.getStoredQuantity(product));
     }
 }

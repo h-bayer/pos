@@ -12,7 +12,7 @@ import java.util.*;
                 columnNames = {"warehouse_id", "code"}
         ),
         indexes = @Index(name = "idx_location_code", columnList = "code"))
-public class StorageLocation {
+class StorageLocation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class StorageLocation {
                 .sum();
     }
 
-    public void store(Product product, int quantity) {
+    void store(Product product, int quantity) {
         if(quantity > getFreeCapacity()) {
             throw new IllegalArgumentException("Quantity exceeds capacity");
         }
