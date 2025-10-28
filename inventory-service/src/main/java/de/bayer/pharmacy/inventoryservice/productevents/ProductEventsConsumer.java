@@ -33,6 +33,7 @@ public class ProductEventsConsumer {
             dltTopicSuffix = ".DLT",
             autoCreateTopics = "true"
     )
+
     @KafkaListener(topics = "${app.topics.productEvents}", groupId = "${spring.kafka.consumer.group-id}")
     public void onProductPublished(@Header("eventId") String eventId,
                                    ConsumerRecord<String, ProductPublished> rec) {

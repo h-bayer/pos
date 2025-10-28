@@ -66,9 +66,9 @@ app:
 
 logging:
   level:
-    root: INFO
-    org.springframework: INFO
-    org.springframework.boot: INFO
+    root: ERROR
+    org.springframework: ERROR
+    org.springframework.boot: ERROR
     org.apache.kafka.clients.producer: INFO
     org.apache.kafka.clients.consumer: INFO
     org.apache.kafka.common.network: INFO

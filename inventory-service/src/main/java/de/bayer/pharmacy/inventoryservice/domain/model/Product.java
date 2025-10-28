@@ -30,18 +30,6 @@ public class Product {
     @Column(nullable = false)
     private ProductType type;
 
-
-//    // Bidirektionales n:m zu Warehouse
-//    @ManyToMany
-//    @JoinTable(
-//            name = "warehouse_products",
-//            joinColumns = @JoinColumn(name = "product_id"),
-//            inverseJoinColumns = @JoinColumn(name = "warehouse_id"),
-//            uniqueConstraints = @UniqueConstraint(name = "uk_warehouse_product", columnNames = {"product_id", "warehouse_id"})
-//    )
-//    private Set<Warehouse> warehouses = new HashSet<>();
-
-
     public Product(String sku, String name) {
         this.sku = sku;
         this.name = name;
@@ -104,8 +92,5 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
-
-
-
 
 }

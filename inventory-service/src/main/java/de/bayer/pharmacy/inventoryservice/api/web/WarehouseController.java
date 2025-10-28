@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/warehouses")
 public class WarehouseController {
 
-    private CommandBus commandBus;
+    private final CommandBus commandBus;
 
     public WarehouseController(CommandBus commandBus) {
         this.commandBus = commandBus;
@@ -23,7 +23,9 @@ public class WarehouseController {
 
     @PostMapping("/store")
     public ResponseEntity<?> storeDeliveryPosition(@RequestBody StoreProductRequest request) {
+
         var product = new Product(request.productSku(), request.productName());
+
         var command = new StoreDeliveryPositionCommand(request.warehouseCode(), product, request.quantity());
 
         try {

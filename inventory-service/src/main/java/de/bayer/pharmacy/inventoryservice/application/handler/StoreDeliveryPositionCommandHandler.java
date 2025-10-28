@@ -31,7 +31,7 @@ public class StoreDeliveryPositionCommandHandler implements ICommandHandler<Stor
             var warehouse =  this.warehouseRepository.findByCode(command.warehouseCode())
                     .orElseThrow(()-> new IllegalArgumentException("Warehouse not found"));
 
-            var productToStore = this.productRepository.findByProductSku(command.product().getSku())
+            var productToStore = this.productRepository.findBySku(command.product().getSku())
                     .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
 
