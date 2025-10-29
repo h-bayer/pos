@@ -22,8 +22,8 @@ class WarehouseTest {
     void setUp() {
         warehouse = new Warehouse();
 
-        warehouse.createNewStorageLocation("AF-12", 10);
-        warehouse.createNewStorageLocation("AF-13", 5);
+        warehouse.addNewStorageLocation("AF-12", 10);
+        warehouse.addNewStorageLocation("AF-13", 5);
 
         product = new Product("12345-12", "TestProduct");
     }

@@ -1,9 +1,10 @@
 package de.bayer.pharmacy.inventoryservice.domain.exception;
 
+import de.bayer.pharmacy.common.domain.exception.DomainException;
 import de.bayer.pharmacy.inventoryservice.domain.model.Product;
 
-public class ProductStorageException extends RuntimeException {
-    public ProductStorageException(Product product, String reason) {
-        super("Product " + product.getId()   + " cannot be stored (" + reason + ")");
+public class ProductStorageException extends DomainException {
+    public ProductStorageException( String reason) {
+        super( reason );
     }
 }

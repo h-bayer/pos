@@ -30,14 +30,7 @@ public class Product {
     @Column(nullable = false)
     private ProductType type;
 
-    public Product(String sku, String name) {
-        this.sku = sku;
-        this.name = name;
-    }
 
-    public Product() {
-
-    }
 
 
     // --- equals/hashCode nur über ID (nach Persistenz) ---
@@ -61,16 +54,18 @@ public class Product {
         return status;
     }
 
-    public void setStatus(ProductStatus status) {
+    public Product setStatus(ProductStatus status) {
         this.status = status;
+        return this;
     }
 
     public ProductType getType() {
         return type;
     }
 
-    public void setType(ProductType type) {
+    public Product setType(ProductType type) {
         this.type = type;
+        return this;
     }
 
     public Long getId() {
@@ -81,16 +76,32 @@ public class Product {
         return sku;
     }
 
-    public void setSku(String sku) {
+    public Product setSku(String sku) {
         this.sku = sku;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public Product setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Product(String sku)
+    {
+        this.sku = sku;
+    }
+
+    public Product(String sku, String name) {
+        this.sku = sku;
+        this.name = name;
+    }
+
+    public Product() {
+
     }
 
 }

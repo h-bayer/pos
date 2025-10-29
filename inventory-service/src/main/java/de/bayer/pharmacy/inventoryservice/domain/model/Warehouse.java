@@ -24,8 +24,8 @@ public class Warehouse {
     @Column(nullable = false, length = 64, unique = true)
     private String code;
 
-    @Column(nullable = false, length = 255)
-    private String name;
+//    @Column(nullable = false, length = 255)
+//    private String name;
 
     @Column(length = 512)
     private String address;
@@ -39,18 +39,21 @@ public class Warehouse {
     @OrderBy("code ASC")
     private List<StorageLocation> storageLocations = new ArrayList<>();
 
-    public void createNewStorageLocation(String code, int quantity)  {
+    public Warehouse addNewStorageLocation(String code, int quantity)  {
         var storageLocation = new StorageLocation(quantity);
         storageLocation.setCode(code);
         storageLocation.setWarehouse(this);
 
         this.storageLocations.add(storageLocation);
+
+        return this;
     }
 
 
-    public void removeStorageLocation(StorageLocation loc) {
+    public Warehouse removeStorageLocation(StorageLocation loc) {
         storageLocations.remove(loc);
         loc.setWarehouse(null);
+        return this;
     }
 
     private StorageLocation findStorageLocation(String code) {
@@ -69,7 +72,7 @@ public class Warehouse {
         if (quantity <= 0) throw new IllegalArgumentException("quantity must be greater than zero");
 
         if(!canProductBeStored(product)) {
-            throw new ProductStorageException(product,"Status not appropriate for storing" );
+            throw new ProductStorageException("Status not appropriate for storing for product: " + product.getSku() );
         }
 
         int remaining = quantity;
@@ -124,7 +127,7 @@ public class Warehouse {
         if (quantity <= 0) throw new IllegalArgumentException("quantity must be positive");
         StorageLocation location = findStorageLocation(locationCode);
         if (location == null)
-            throw new IllegalArgumentException("storage location " + locationCode + " does not exist in warehouse " + name);
+            throw new IllegalArgumentException("storage location " + locationCode + " does not exist in warehouse " + code);
 
         InventoryEntry entry = location.getInventoryEntries().stream()
                 .filter(e -> e.getProduct().equals(product))
@@ -198,26 +201,37 @@ public class Warehouse {
         return code;
     }
 
-    public void setCode(String code) {
+    public Warehouse setCode(String code) {
         this.code = code;
+
+        return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public Warehouse setAddress(String address) {
         this.address = address;
+        return this;
     }
 
 
+    public Warehouse(String code, String address) {
+        this.code = code;
 
+        this.address = address;
+    }
+
+    protected Warehouse(){
+
+    }
 }

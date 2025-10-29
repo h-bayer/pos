@@ -3,6 +3,8 @@ package de.bayer.pharmacy.inventoryservice.application.handler;
 import de.bayer.pharmacy.common.commandhandling.ICommandHandler;
 import de.bayer.pharmacy.inventoryservice.application.command.StoreDeliveryPositionCommand;
 import de.bayer.pharmacy.inventoryservice.application.command.StoreDeliveryPositionResult;
+import de.bayer.pharmacy.inventoryservice.domain.exception.ProductStorageException;
+import de.bayer.pharmacy.inventoryservice.domain.exception.WarehouseNotFoundException;
 import de.bayer.pharmacy.inventoryservice.domain.model.Product;
 import de.bayer.pharmacy.inventoryservice.domain.model.ProductStatus;
 import de.bayer.pharmacy.inventoryservice.infrastructure.repository.ProductRepository;
@@ -29,10 +31,10 @@ public class StoreDeliveryPositionCommandHandler implements ICommandHandler<Stor
     @Override
     public StoreDeliveryPositionResult handle(StoreDeliveryPositionCommand command) {
             var warehouse =  this.warehouseRepository.findByCode(command.warehouseCode())
-                    .orElseThrow(()-> new IllegalArgumentException("Warehouse not found"));
+                    .orElseThrow(()-> new WarehouseNotFoundException("Warehouse not found"));
 
             var productToStore = this.productRepository.findBySku(command.product().getSku())
-                    .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+                    .orElseThrow(() -> new ProductStorageException("Product not found"));
 
 
             var storeResult = warehouse.store(productToStore, command.quantity());

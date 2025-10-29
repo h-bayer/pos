@@ -6,6 +6,7 @@ import de.bayer.pharmacy.common.kafka.ProcessedEventRepository;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = de.bayer.pharmacy.inventoryservice.app.InventoryServiceApplication.class)
 @ActiveProfiles("local")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) //for one object for all test methods. BeforeAll can be non static, context loading quicker
 @AutoConfigureMockMvc
 class ProductEventsConsumerTest {
 
