@@ -3,13 +3,11 @@ package de.bayer.pharmacy.inventoryservice.productevents;
 
 import com.example.avro.ProductPublished;
 import de.bayer.pharmacy.common.kafka.ProcessedEventRepository;
+import de.bayer.pharmacy.inventoryservice.api.messaging.ProductEventsConsumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,4 +96,6 @@ class ProductEventsConsumerTest {
         verify(processedEventRepository, never()).save(any());
         // The log is written but not thrown — no exception expected
     }
+
+
 }

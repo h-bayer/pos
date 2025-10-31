@@ -179,6 +179,9 @@ public class Warehouse {
                 .sum();
     }
 
+    public boolean canBeDeleted(){
+        return true;
+    }
     // equals/hashCode
     @Override
     public boolean equals(Object o) {
@@ -207,13 +210,7 @@ public class Warehouse {
         return this;
     }
 
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+
 
     public String getAddress() {
         return address;

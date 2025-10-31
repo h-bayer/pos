@@ -15,3 +15,6 @@ public class InventoryServiceApplication {
     SpringApplication.run(InventoryServiceApplication.class, args);
   }
 }
+
+
+//TODO: Implement productcreated kafka eventhandler set product status to DRAFT or so

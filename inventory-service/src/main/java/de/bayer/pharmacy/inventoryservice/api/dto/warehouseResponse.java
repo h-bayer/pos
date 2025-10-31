@@ -1,6 +1,6 @@
 package de.bayer.pharmacy.inventoryservice.api.dto;
 
-public record CreateWarehouseResponse(
+public record warehouseResponse(
         String warehouseCode
 ) {
 

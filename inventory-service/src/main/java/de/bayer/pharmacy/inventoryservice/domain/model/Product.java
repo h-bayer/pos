@@ -90,6 +90,16 @@ public class Product {
         return this;
     }
 
+    public boolean canBePublished()
+    {
+        return this.status == ProductStatus.CREATED;
+    }
+
+    public void approve()
+    {
+        this.status = ProductStatus.APPROVED;
+    }
+
     public Product(String sku)
     {
         this.sku = sku;
@@ -103,5 +113,7 @@ public class Product {
     public Product() {
 
     }
+
+
 
 }

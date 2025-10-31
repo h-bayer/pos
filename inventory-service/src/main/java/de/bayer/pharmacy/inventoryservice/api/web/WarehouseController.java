@@ -1,15 +1,15 @@
 package de.bayer.pharmacy.inventoryservice.api.web;
 
 import de.bayer.pharmacy.common.commandhandling.CommandBus;
-import de.bayer.pharmacy.inventoryservice.api.dto.CreateWarehouseRequest;
-import de.bayer.pharmacy.inventoryservice.api.dto.CreateWarehouseResponse;
+import de.bayer.pharmacy.inventoryservice.api.dto.warehouseRequest;
+import de.bayer.pharmacy.inventoryservice.api.dto.warehouseResponse;
 import de.bayer.pharmacy.inventoryservice.application.command.CreateWareHouseCommand;
 
+import de.bayer.pharmacy.inventoryservice.application.command.DeleteWarehouseCommand;
+import de.bayer.pharmacy.inventoryservice.domain.exception.WarehouseException;
+import de.bayer.pharmacy.inventoryservice.domain.exception.WarehouseNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -24,14 +24,32 @@ public class WarehouseController {
         this.commandBus = commandBus;
     }
 
+    @DeleteMapping("/{warehouseCode}")
+    public ResponseEntity<?> deleteWarehouse(@PathVariable String warehouseCode)
+    {
+        try
+        {
+            var deleteWarehouseCommand = new DeleteWarehouseCommand(warehouseCode);
+
+            commandBus.dispatch(deleteWarehouseCommand);
+
+            return ResponseEntity.ok().build();
+        }
+        catch (WarehouseNotFoundException ex)
+        {
+            return ResponseEntity.notFound().build();
+        }
+        catch(WarehouseException ex)
+        {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
     @PostMapping
-    ResponseEntity<?> create(@RequestBody final CreateWarehouseRequest warehouseRequest) {
+    ResponseEntity<?> create(@RequestBody final warehouseRequest warehouseRequest) {
         var createWarehouseCommand = new CreateWareHouseCommand()
                 .setWarehouseCode(warehouseRequest.code())
                 .setWarehouseAddress(warehouseRequest.address());
-
-
-
 
         try {
             var warehouse = commandBus.dispatch(createWarehouseCommand);
@@ -44,7 +62,7 @@ public class WarehouseController {
 
             return ResponseEntity
                     .created(location)     // sets HTTP 201 + Location header
-                    .body(new CreateWarehouseResponse(warehouseRequest.code())); // optional body
+                    .body(new warehouseResponse(warehouseRequest.code())); // optional body
 
 
             //TODO: adapt exception catch to more specific exceptions
