@@ -19,11 +19,11 @@ public interface ProductRepository
         extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
     // --- basics
-    Optional<Product> findBySku(Long sku);
+    Optional<Product> findBySku(String sku);
 
     List<Product> findByNameContainingIgnoreCase(String q);
 
-    boolean existsBySku(Long sku);
+    boolean existsBySku(String sku);
 
     Page<Product> findByStatus(ProductStatus status, Pageable pageable);
     Page<Product> findByStatusInAndNameContainingIgnoreCase(
@@ -31,13 +31,13 @@ public interface ProductRepository
 
     // Eagerly fetch availability when needed (adjust attribute name to your model)
     @EntityGraph(attributePaths = {"availabilities"})
-    Optional<Product> findWithAvailabilitiesBySku(Long sku);
+    Optional<Product> findWithAvailabilitiesBySku(String sku);
 
     // Pessimistic lock variant for workflows that must serialize updates (e.g., approval)
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints(@QueryHint(name = "jakarta.persistence.lock.timeout", value = "3000"))
     @Query("select p from Product p where p.sku = :sku")
-    Optional<Product> findBySkuForUpdate(@Param("sku") Long sku);
+    Optional<Product> findBySkuForUpdate(@Param("sku") String sku);
 
     // ------ Choose ONE of the two blocks below, matching your mapping ------
 

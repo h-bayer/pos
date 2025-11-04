@@ -9,7 +9,7 @@ public class SupplementProductCreator extends AbstractProductCreator {
     @Override public ProductType type() { return ProductType.SUPPLEMENT; }
 
     @Override
-    public Product create(long sku, String name, String description) {
+    public Product create(String sku, String name, String description) {
         return buildBase(sku, name, description, ProductType.SUPPLEMENT);
     }
 }

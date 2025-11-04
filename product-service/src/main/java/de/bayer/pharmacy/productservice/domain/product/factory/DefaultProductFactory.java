@@ -18,7 +18,7 @@ class DefaultProductFactory implements IProductFactory {
         this.creators = creators.stream().collect(Collectors.toMap(IProductCreator::type, c -> c));
     }
 
-    public Product create(long sku, String name, String desc, ProductType type) {
+    public Product create(String sku, String name, String desc, ProductType type) {
         var creator = Optional.ofNullable(creators.get(type))
                 .orElseThrow(() -> new IllegalArgumentException("No creator for " + type));
 

@@ -7,5 +7,5 @@ import de.bayer.pharmacy.productservice.domain.product.ProductType;
 
 public interface IProductCreator {
     ProductType type();
-    Product create(long sku, String name, String description);
+    Product create(String sku, String name, String description);
 }

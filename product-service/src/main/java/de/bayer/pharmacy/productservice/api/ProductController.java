@@ -7,10 +7,7 @@ import de.bayer.pharmacy.productservice.api.dto.ProductRequest;
 import de.bayer.pharmacy.productservice.api.dto.ProductResponse;
 import de.bayer.pharmacy.productservice.domain.product.Product;
 import de.bayer.pharmacy.productservice.domain.product.ProductType;
-import de.bayer.pharmacy.productservice.domain.product.commands.ApproveProductCommand;
-import de.bayer.pharmacy.productservice.domain.product.commands.CreateProductCommand;
-import de.bayer.pharmacy.productservice.domain.product.commands.DeleteProductCommand;
-import de.bayer.pharmacy.productservice.domain.product.commands.PublishProductCommand;
+import de.bayer.pharmacy.productservice.domain.product.commands.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,9 +75,11 @@ public class ProductController {
         return ResponseEntity.ok(ProductMapper.toResponse(product));
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ProductResponse> get(@PathVariable Long id) {
-//
-//        return ResponseEntity.ok(ProductMapper.toResponse(product));
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> get(@PathVariable String sku) {
+
+        var product = bus.dispatch(new GetProductCommand(sku));
+
+        return ResponseEntity.ok(ProductMapper.toResponse(product));
+    }
 }

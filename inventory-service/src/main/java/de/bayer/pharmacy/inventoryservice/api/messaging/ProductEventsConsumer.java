@@ -43,7 +43,7 @@ public class ProductEventsConsumer {
 
 
     private void handleProductPublished(ProductPublished event) {
-        var cmd = new PublishProductCommand(event.getSku().toString());
+        var cmd = new PublishProductCommand(event.getSku().toString(), event.getName().toString());
         commandBus.dispatch(cmd);
     }
 
@@ -74,6 +74,8 @@ public class ProductEventsConsumer {
 
 
     }
+
+
 
 
 }

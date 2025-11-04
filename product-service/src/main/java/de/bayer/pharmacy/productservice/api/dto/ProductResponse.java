@@ -5,7 +5,7 @@ import java.util.Set;
 
 public record ProductResponse(
       
-        Long sku,
+        String sku,
         String name,
         String description,
         Instant createdAt,

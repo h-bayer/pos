@@ -1,6 +1,7 @@
 package de.bayer.pharmacy.productservice.domain.product;
 
 
+import de.bayer.pharmacy.common.domain.AbstractDomainEntity;
 import de.bayer.pharmacy.productservice.domain.product.events.*;
 import jakarta.persistence.*;
 
@@ -11,14 +12,19 @@ import java.util.*;
 
 
 @Entity
-public class Product{
+@Table(name = "products",
+        indexes = {
+                @Index(name = "idx_product_sku", columnList = "sku", unique = true),
+                @Index(name = "idx_product_name", columnList = "name")
+        })
+public class Product extends AbstractDomainEntity {
 
     @Version
     private long version;
 
     @Id
-    @Column(nullable = false)
-    private long sku;
+    @Column(nullable = false, unique = true )
+    private String sku;
 
     @Column(nullable = false)
     private String name;
@@ -32,6 +38,12 @@ public class Product{
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ProductType type;
+
+    @Column(nullable = false)
+    private boolean needsCooling = false;
+
+    @Column(nullable = false)
+    private boolean isNarcotic = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
@@ -49,9 +61,34 @@ public class Product{
 
     private Instant approvedAt;
 
-    @Transient private final List<Object> domainEvents = new ArrayList<>();
-
     private String publishedBy;
+
+    private Instant publishedAt;
+
+    public String getPublishedBy() {
+        return publishedBy;
+    }
+
+    public void setPublishedBy(String publishedBy) {
+        this.publishedBy = publishedBy;
+    }
+
+    public boolean isNeedsCooling() {
+        return needsCooling;
+    }
+
+    public void setNeedsCooling(boolean needsCooling) {
+        this.needsCooling = needsCooling;
+    }
+
+    public boolean isNarcotic() {
+        return isNarcotic;
+    }
+
+    public void setNarcotic(boolean narcotic) {
+        isNarcotic = narcotic;
+    }
+
 
     public Instant getPublishedAt() {
         return publishedAt;
@@ -60,13 +97,6 @@ public class Product{
     public void setPublishedAt(Instant publishedAt) {
         this.publishedAt = publishedAt;
     }
-
-    private Instant publishedAt;
-
-
-
-
-
 
 
     public String getName() {
@@ -104,12 +134,12 @@ public class Product{
     }
 
 
-    public long getSku() {
+    public String getSku() {
         return sku;
     }
 
 
-    public void setSku(long sku) {
+    public void setSku(String sku) {
         this.sku = sku;
     }
 
@@ -129,10 +159,7 @@ public class Product{
     }
 
 
-    public void upsertImage(ProductImage image) {
-        this.images.removeIf(i->i.getImageUrl().equals(image.getImageUrl()));
-        images.add(image);
-    }
+
 
     public void setName(String name) {
         this.name = name;
@@ -161,6 +188,19 @@ public class Product{
 
     public void setApprovedBy(String approvedBy) {
         this.approvedBy = approvedBy;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
+    }
+
+    public void upsertImage(ProductImage image) {
+        this.images.removeIf(i->i.getImageUrl().equals(image.getImageUrl()));
+        images.add(image);
     }
 
     // ---- State transitions
@@ -209,7 +249,7 @@ public class Product{
 
     }
 
-    public Product(ProductType type, Long sku, String name, String description) {
+    public Product(ProductType type, String sku, String name, String description) {
         this.type = type;
         this.sku = sku;
         this.name = name;
@@ -223,17 +263,8 @@ public class Product{
         if (!cond) throw new IllegalStateException(msg);
     }
 
-    void record(Object event) {
-        domainEvents.add(event);
-    }
 
-    public String getPublishedBy() {
-        return publishedBy;
-    }
 
-    public void setPublishedBy(String publishedBy) {
-        this.publishedBy = publishedBy;
-    }
 
     public boolean canBeDeleted() {
         return !this.availabilities.stream().anyMatch(a -> a.getAvailableQuantity()>0);
@@ -244,17 +275,7 @@ public class Product{
         this.record(new ProductDeletedEvent(sku));
     }
 
-    public List<Object> pullDomainEvents() {
-        var copy = List.copyOf(domainEvents);
-        domainEvents.clear();
-        return copy;
-    }
 
-    public long getVersion() {
-        return version;
-    }
 
-    public void setVersion(long version) {
-        this.version = version;
-    }
+
 }

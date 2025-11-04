@@ -9,7 +9,7 @@ public class HygieneProductCreator extends AbstractProductCreator {
     @Override public ProductType type() { return ProductType.HYGIENE; }
 
     @Override
-    public Product create(long sku, String name, String description) {
+    public Product create(String sku, String name, String description) {
         return buildBase(sku, name, description, ProductType.HYGIENE);
     }
 }

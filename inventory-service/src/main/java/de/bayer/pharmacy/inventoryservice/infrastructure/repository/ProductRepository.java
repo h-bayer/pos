@@ -10,4 +10,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     public Optional<Product> findBySku(String productSku);
 
+    public boolean existsBySku(String productSku);
+
 }

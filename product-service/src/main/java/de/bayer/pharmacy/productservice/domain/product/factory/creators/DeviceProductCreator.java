@@ -9,7 +9,7 @@ public class DeviceProductCreator extends AbstractProductCreator {
     @Override public ProductType type() { return ProductType.DEVICE; }
 
     @Override
-    public Product create(long sku, String name, String description) {
+    public Product create(String sku, String name, String description) {
         // Add DEVICE-specific initialization or validation here
         return buildBase(sku, name, description, ProductType.DEVICE);
     }

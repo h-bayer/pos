@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 public record ProductCreateRequest(
-        @NotNull Long sku,
+        @NotNull String sku,
 
         @NotBlank String name,
 

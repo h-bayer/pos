@@ -3,6 +3,7 @@ package de.bayer.pharmacy.productservice.domain.product.commandhandler;
 import de.bayer.pharmacy.common.commandhandling.ICommandHandler;
 import de.bayer.pharmacy.productservice.domain.product.Product;
 import de.bayer.pharmacy.productservice.domain.product.commands.PublishProductCommand;
+import de.bayer.pharmacy.productservice.domain.product.exceptions.ProductException;
 import de.bayer.pharmacy.productservice.domain.product.repository.ProductRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -24,17 +25,13 @@ public class PublishProductCommandHandler implements ICommandHandler<PublishProd
         return PublishProductCommand.class;
     }
 
-    @Override @Transactional
+    @Override
+    @Transactional
     public Product handle(PublishProductCommand cmd) {
 
-        var proOpt = repo.findBySku(cmd.sku());
+        var product = repo.findBySku(cmd.sku()).orElseThrow(()->new ProductException(cmd.sku()));
 
-        if(!proOpt.isPresent()) {
-            throw new IllegalArgumentException("Sku not found");
-        }
-
-        var product = proOpt.get();
-
+        //TODO: publisher from login to be added!!!!!
         product.publish("harry");
 
         product = repo.save(product);

@@ -27,59 +27,61 @@ class PublishProductCommandHandlerTest {
     }
 
     @Test
-    void shouldApproveAndSaveProductWhenPublishable() {
+    void shouldApproveAndSaveProductWhenProductNew() {
         // given
         String sku = "SKU-123";
-        PublishProductCommand command = new PublishProductCommand(sku);
+        String name = "Name-123";
+        PublishProductCommand command = new PublishProductCommand(sku, name);
 
         Product product = mock(Product.class);
 
-        when(productRepository.findBySku(sku)).thenReturn(Optional.of(product));
-        when(product.canBePublished()).thenReturn(true);
+        when(productRepository.findBySku(sku)).thenReturn(Optional.empty());
+        //when(product.canBePublished()).thenReturn(true);
 
         // when
         handler.handle(command);
 
         // then
-        verify(product).approve();
-        verify(productRepository).save(product);
+        //verify(product).approve();
+        verify(productRepository).save(any(Product.class));
     }
 
-    @Test
-    void shouldThrowProductExceptionWhenProductCannotBePublished() {
-        // given
-        String sku = "SKU-456";
-        PublishProductCommand command = new PublishProductCommand(sku);
+//    @Test
+//    void shouldThrowProductExceptionWhenProductCannotBePublished() {
+//        // given
+//        String sku = "SKU-456";
+//        String name = "Name-456";
+//        PublishProductCommand command = new PublishProductCommand(sku, name);
+//
+//        Product product = mock(Product.class);
+//
+//        when(productRepository.findBySku(sku)).thenReturn(Optional.of(product));
+//
+//        //when(product.canBePublished()).thenReturn(false);
+//        when(product.getSku()).thenReturn(sku);
+//
+//        // when / then
+//        ProductException ex = assertThrows(ProductException.class, () -> handler.handle(command));
+//
+//        assertTrue(ex.getMessage().contains(sku));
+//
+//        verify(product, never()).approve();
+//        verify(productRepository, never()).save(any());
+//    }
 
-        Product product = mock(Product.class);
-
-        when(productRepository.findBySku(sku)).thenReturn(Optional.of(product));
-
-        when(product.canBePublished()).thenReturn(false);
-        when(product.getSku()).thenReturn(sku);
-
-        // when / then
-        ProductException ex = assertThrows(ProductException.class, () -> handler.handle(command));
-
-        assertTrue(ex.getMessage().contains(sku));
-
-        verify(product, never()).approve();
-        verify(productRepository, never()).save(any());
-    }
-
-    @Test
-    void shouldThrowNotFoundWhenProductDoesNotExist() {
-        // given
-        String sku = "SKU-999";
-        PublishProductCommand command = new PublishProductCommand(sku);
-
-        when(productRepository.findBySku(sku)).thenReturn(Optional.empty());
-
-        // when / then
-        ProductNotFoundException ex = assertThrows(ProductNotFoundException.class,
-                () -> handler.handle(command));
-
-        assertTrue(ex.getMessage().contains(sku));
-        verify(productRepository, never()).save(any());
-    }
+//    @Test
+//    void shouldThrowNotFoundWhenProductDoesNotExist() {
+//        // given
+//        String sku = "SKU-999";
+//        PublishProductCommand command = new PublishProductCommand(sku);
+//
+//        when(productRepository.findBySku(sku)).thenReturn(Optional.empty());
+//
+//        // when / then
+//        ProductNotFoundException ex = assertThrows(ProductNotFoundException.class,
+//                () -> handler.handle(command));
+//
+//        assertTrue(ex.getMessage().contains(sku));
+//        verify(productRepository, never()).save(any());
+//    }
 }

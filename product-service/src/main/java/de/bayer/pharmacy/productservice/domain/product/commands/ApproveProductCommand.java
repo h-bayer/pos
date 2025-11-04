@@ -5,12 +5,11 @@ import de.bayer.pharmacy.productservice.domain.product.Product;
 
 
 public record ApproveProductCommand(
-        long sku
+        String sku
 
 ) implements ICommand<Product> {
 
     public ApproveProductCommand {
-        if (sku <= 0) throw new IllegalArgumentException("sku must be > 0");
 
     }
 }

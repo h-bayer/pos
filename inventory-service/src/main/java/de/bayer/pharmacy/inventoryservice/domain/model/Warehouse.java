@@ -1,5 +1,6 @@
 package de.bayer.pharmacy.inventoryservice.domain.model;
 
+import de.bayer.pharmacy.common.domain.AbstractDomainEntity;
 import de.bayer.pharmacy.inventoryservice.application.command.StoreDeliveryPositionResult;
 import de.bayer.pharmacy.inventoryservice.domain.exception.ProductStorageException;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
                 @Index(name = "idx_warehouse_code", columnList = "code", unique = true),
                 @Index(name = "idx_warehouse_name", columnList = "name")
         })
-public class Warehouse {
+public class Warehouse extends AbstractDomainEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +25,10 @@ public class Warehouse {
     @Column(nullable = false, length = 64, unique = true)
     private String code;
 
-//    @Column(nullable = false, length = 255)
-//    private String name;
-
     @Column(length = 512)
     private String address;
 
-//    // Rückseite des n:m zu Product
-//    @ManyToMany(mappedBy = "warehouses")
-//    private Set<Product> products = new HashSet<>();
+
 
     // 1:n Storage Locations
     @OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL, orphanRemoval = true)

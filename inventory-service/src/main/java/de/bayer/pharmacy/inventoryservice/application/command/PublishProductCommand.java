@@ -5,6 +5,16 @@ import de.bayer.pharmacy.common.commandhandling.ICommand;
 public class PublishProductCommand implements ICommand<Void> {
     private String sku;
 
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSku() {
         return sku;
     }
@@ -13,7 +23,8 @@ public class PublishProductCommand implements ICommand<Void> {
         this.sku = sku;
     }
 
-    public PublishProductCommand(String sku) {
+    public PublishProductCommand(String sku, String name) {
         this.sku = sku;
+        this.name = name;
     }
 }

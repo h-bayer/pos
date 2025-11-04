@@ -1,5 +1,6 @@
 package de.bayer.pharmacy.inventoryservice.domain.model;
 
+import de.bayer.pharmacy.common.domain.AbstractDomainEntity;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -10,7 +11,7 @@ import java.util.*;
                 @Index(name = "idx_product_sku", columnList = "sku", unique = true),
                 @Index(name = "idx_product_name", columnList = "name")
         })
-public class Product {
+public class Product extends AbstractDomainEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,12 +24,10 @@ public class Product {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProductStatus status;
+    private ProductStatus status = ProductStatus.CREATED;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProductType type;
+    private ProductType type = ProductType.STANDARD;
 
 
 
@@ -90,10 +89,7 @@ public class Product {
         return this;
     }
 
-    public boolean canBePublished()
-    {
-        return this.status == ProductStatus.CREATED;
-    }
+
 
     public void approve()
     {

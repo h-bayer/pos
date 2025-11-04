@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.bayer.pharmacy.common.outbox.OutboxMessage;
 import de.bayer.pharmacy.common.outbox.OutboxRepository;
 import de.bayer.pharmacy.productservice.config.TopicProperties;
+import de.bayer.pharmacy.productservice.domain.product.events.ProductApprovedEvent;
+import de.bayer.pharmacy.productservice.domain.product.events.ProductCreatedEvent;
 import de.bayer.pharmacy.productservice.domain.product.events.ProductPublishedEvent;
 import de.bayer.pharmacy.productservice.domain.product.repository.ProductRepository;
 
@@ -49,7 +51,7 @@ public class IntegrationBridge {
         try {
             OutboxMessage outboxMessage = new OutboxMessage();
             outboxMessage.setTopic(topics.productEvents());
-            outboxMessage.setKeyRef(String.valueOf(ie.sku()));
+            outboxMessage.setKeyRef(ie.sku());
             outboxMessage.setType("ProductPublished");
             outboxMessage.setPayload(objectMapper.writeValueAsString(ie));
 
@@ -59,6 +61,8 @@ public class IntegrationBridge {
             throw new IllegalStateException("Cannot serialize integration event", ex);
         }
     }
+
+
 
 
 

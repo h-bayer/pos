@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public abstract class AbstractProductCreator implements IProductCreator {
 
-    protected Product buildBase(long sku, String name, String description, ProductType type) {
-        if (sku <= 0) throw new IllegalArgumentException("sku must be > 0");
+    protected Product buildBase(String sku, String name, String description, ProductType type) {
+
         Objects.requireNonNull(name, "name");
         Objects.requireNonNull(description, "description");
         Objects.requireNonNull(type, "type");

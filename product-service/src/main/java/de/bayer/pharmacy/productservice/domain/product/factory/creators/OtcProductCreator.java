@@ -9,7 +9,7 @@ public class OtcProductCreator extends AbstractProductCreator {
     @Override public ProductType type() { return ProductType.OTC; }
 
     @Override
-    public Product create(long sku, String name, String description) {
+    public Product create(String sku, String name, String description) {
         // Add OTC-specific defaults/policies here if needed
         return buildBase(sku, name, description, ProductType.OTC);
     }
