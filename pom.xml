@@ -35,5 +35,6 @@
     <module>label-localization-service</module>
     <module>audit-service</module>
     <module>product-service</module>
+    <module>CLRAIProducts</module>
   </modules>
 </project>
