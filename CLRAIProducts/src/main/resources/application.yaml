@@ -2,66 +2,47 @@ spring:
   application:
     name: CLRAIProducts
 
-  # -----------------------------
-  # OPENAI CONFIGURATION (Spring AI)
-  # -----------------------------
   ai:
     openai:
-      # Your OpenAI API key (? besser als Umgebungsvariable laden)
-      api-key: f2aa7b2e082342f39dbc94a397005592
-      # base-url: https://api.openai.com/v1   # optional f�r Azure oder custom endpoint
-
+      api-key: ${OPENAI_API_KEY}
       chat:
         options:
-          model: gpt-4o-mini       # Alternative: gpt-4o oder gpt-3.5-turbo
-          temperature: 0.7         # Kreativit�tslevel
-          max-tokens: 800          # Maximale Antwortl�nge
+          model: gpt-4o-mini
+          temperature: 0.7
+          max-tokens: 800
 
-    # -----------------------------
-    # SPRING AI MCP (Tool integration)
-    # -----------------------------
     mcp:
-      tools:
-        - name: createProduct
-          description: Creates a new pharmaceutical product via REST API
-          url: http://localhost:8086/mcp/tools/createProduct
-          method: POST
+      server:
+        name: product-server
+        version: 0.0.1
+        type: sync
+        stdio: true
+      client:
+        enabled: true
+        name: pharma-client
+        version: 0.0.1
+        toolcallback:
+          enabled: true
+        annotation-scanner:
+          enabled: true
+        type: sync
+        stdio:
+          connections:
+            product-server:
+              command: java
+              args:
+                - "-jar"
+                - 'C:\Users\harald.bayer\Development\POS-full\CLRAIProducts\target\CLRAIProducts-0.0.1-SNAPSHOT.jar'
 
-  # -----------------------------
-  # DATABASE (optional memory)
-  # -----------------------------
-  datasource:
-    url: jdbc:postgresql://localhost:5432/pharma_agent
-    username: postgres
-    password: secret
 
-  jpa:
-    hibernate:
-      ddl-auto: update
 
-# -----------------------------
-# LOGGING
-# -----------------------------
+  main:
+    web-application-type: none
+
+server:
+  port: 8080
+  address: 0.0.0.0
+
 logging:
   level:
-    root: INFO
-    org.springframework: INFO
-    org.springframework.boot: INFO
-    org.apache.kafka.clients.producer: INFO
-    org.apache.kafka.clients.consumer: INFO
-    org.apache.kafka.common.network: INFO
-    org.springframework.kafka.core.KafkaTemplate: INFO
-    org.springframework.kafka.listener: INFO
     org.springframework.ai: DEBUG
-    org.springframework.web: INFO
-
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n"
-
-  file:
-    name: logs/application_product.log
-
-  logback:
-    rollingpolicy:
-      max-history: 7
-      max-file-size: 10MB
