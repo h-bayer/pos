@@ -161,3 +161,14 @@ rpk topic alter-config productEvents --set retention.ms=604800000 --brokers loca
 
 
 ```
+
+### McpInspector
+```bash
+#start the inspector  https://github.com/modelcontextprotocol/inspector
+
+npx @modelcontextprotocol/inspector
+
+#url http://localhost:8085/sse
+#TransportType: SSE
+
+```

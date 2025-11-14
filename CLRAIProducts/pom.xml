@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
-            <version>1.0.1</version>
+
         </dependency>
 
         <dependency>

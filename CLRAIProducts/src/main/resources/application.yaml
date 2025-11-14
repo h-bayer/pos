@@ -12,29 +12,18 @@ spring:
           max-tokens: 800
 
     mcp:
-      server:
-        name: product-server
-        version: 0.0.1
-        type: sync
-        stdio: true
       client:
         enabled: true
-        name: pharma-client
-        version: 0.0.1
+        type: SYNC
+
         toolcallback:
           enabled: true
-        annotation-scanner:
-          enabled: true
-        type: sync
-        stdio:
+
+        sse:
           connections:
-            product-server:
-              command: java
-              args:
-                - "-jar"
-                - 'C:\Users\harald.bayer\Development\POS-full\CLRAIProducts\target\CLRAIProducts-0.0.1-SNAPSHOT.jar'
-
-
+            product-mcp-server:
+              url: http://localhost:8085
+              sse-endpoint: /sse
 
   main:
     web-application-type: none

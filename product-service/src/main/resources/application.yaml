@@ -46,6 +46,21 @@ spring:
     redis:
       host: ${SPRING_DATA_REDIS_HOST:localhost}
       port: ${SPRING_DATA_REDIS_PORT:6379}
+  ai:
+    mcp:
+      server:
+        enabled: true
+        name: product-mcp-server
+        version: 1.0.0
+        protocol: SSE                     # WebMVC SSE Transport
+        capabilities:
+          tool: true
+          resource: false
+          prompt: false
+          completion: false
+        sse-endpoint: /sse
+        message-endpoint: /mcp/message
+        request-timeout: 20s
 outbox:
   flush-interval-ms:500
 
